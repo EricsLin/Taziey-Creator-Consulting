@@ -1,0 +1,49 @@
+/* Fades in slightly late so a fast cache hit never flashes a skeleton. */
+.screen {
+  opacity: 0;
+  animation: appear 0.2s ease 120ms forwards;
+}
+
+@keyframes appear {
+  to {
+    opacity: 1;
+  }
+}
+
+.block {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  flex: none;
+  background: var(--slot);
+  border-radius: var(--r-sm);
+}
+
+.block::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--sheen),
+    transparent
+  );
+  animation: sweep 1.5s var(--ease-inout) infinite;
+}
+
+@keyframes sweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen {
+    animation-duration: 0.01ms;
+  }
+  .block::after {
+    animation: none;
+  }
+}

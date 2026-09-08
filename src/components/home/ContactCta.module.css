@@ -1,0 +1,85 @@
+.section {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 0 var(--gutter) 110px;
+}
+
+.panel {
+  border-radius: var(--r-xl);
+  background: var(--accent);
+  color: var(--on-accent);
+  padding: 56px 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-weight: 800;
+  font-size: 44px;
+  letter-spacing: -0.04em;
+  margin: 0 0 10px;
+  line-height: 1;
+}
+
+.blurb {
+  margin: 0;
+  font-size: 17px;
+  opacity: 0.85;
+  max-width: 44ch;
+}
+
+.channels {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 290px;
+  flex: 1 1 290px;
+}
+
+.row {
+  padding: 14px 20px;
+  border-radius: var(--r-md);
+  font-size: 15px;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  background: var(--overlay);
+  color: var(--ink);
+  transition: background-color 0.18s ease;
+}
+
+a.row:hover {
+  /* Text colour is pinned here so the global `a:hover` rule (higher
+     specificity than `.row`) can't recolour it — only the box changes. */
+  background: var(--overlay-strong);
+  color: var(--ink);
+}
+
+.row--primary {
+  background: var(--ink);
+  color: var(--on-ink);
+}
+a.row--primary:hover {
+  background: var(--ink-hover);
+  color: var(--on-ink);
+}
+
+.kind {
+  opacity: 0.7;
+}
+.row--primary .kind {
+  opacity: 0.6;
+}
+
+@media (max-width: 700px) {
+  .panel {
+    padding: 38px 26px;
+  }
+  .title {
+    font-size: 32px;
+  }
+}

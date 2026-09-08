@@ -1,0 +1,352 @@
+.intro {
+  max-width: var(--shell-narrow);
+  margin: 0 auto;
+  padding: 92px var(--gutter) 56px;
+}
+
+.eyebrowSpacing {
+  margin-bottom: 14px;
+}
+
+.title {
+  font-weight: 800;
+  font-size: 64px;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  margin: 0 0 22px;
+  max-width: 20ch;
+}
+
+.lede {
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--ink-3);
+  max-width: 58ch;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+/* ---- filter chips ---- */
+.filters {
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 5;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.filterRow {
+  max-width: var(--shell-narrow);
+  margin: 0 auto;
+  padding: 14px var(--gutter);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line-3);
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--ink-3);
+  white-space: nowrap;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.chip:hover {
+  border-color: var(--ink-6);
+  color: var(--ink);
+}
+.chip--on {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+.chip--on:hover {
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
+.chipCount {
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-5);
+}
+.chip--on .chipCount {
+  color: var(--accent);
+}
+
+/* ---- grouped cards ---- */
+.groups {
+  max-width: var(--shell-narrow);
+  margin: 0 auto;
+  padding: 44px var(--gutter) 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
+}
+
+.groupHead {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--line-2);
+}
+
+.groupTitle {
+  font-weight: 700;
+  font-size: 25px;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.groupBlurb {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink-5);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 26px 26px 28px;
+  overflow: hidden;
+  transition: transform 0.22s var(--ease-out), border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.28s var(--ease-out);
+}
+.card:hover {
+  transform: translateY(-3px);
+  border-color: var(--line-3);
+  box-shadow: 0 14px 34px var(--shadow-soft);
+}
+.card:hover::before {
+  transform: scaleY(1);
+}
+
+.num {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--ink-7);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 12px;
+}
+
+.cardName {
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.028em;
+  line-height: 1.15;
+  margin: 0 0 12px;
+}
+
+.cardLead {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  margin: 0 0 10px;
+  text-wrap: pretty;
+}
+
+.cardDetail {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--ink-5);
+  margin: 0;
+  text-wrap: pretty;
+}
+
+.consult {
+  max-width: var(--shell-narrow);
+  margin: 0 auto;
+  padding: 0 var(--gutter) 110px;
+}
+
+.consultPanel {
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.consultBody {
+  padding: 52px 46px;
+}
+
+.consultTitle {
+  font-weight: 700;
+  font-size: 38px;
+  letter-spacing: -0.035em;
+  margin: 0 0 18px;
+  line-height: 1.02;
+}
+
+.consultText {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--ink-3);
+  margin: 0 0 28px;
+  max-width: 48ch;
+  text-wrap: pretty;
+}
+
+.bullets {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.bullet {
+  display: flex;
+  gap: 11px;
+  align-items: baseline;
+  font-size: 15.5px;
+  color: var(--ink-2);
+}
+
+.arrow {
+  color: var(--accent-deep);
+}
+
+.priceCol {
+  background: var(--bg-alt);
+  padding: 52px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.price {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 68px;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.per {
+  font-size: 19px;
+  color: var(--ink-5);
+}
+
+.priceNote {
+  font-size: 14.5px;
+  color: var(--ink-5);
+  line-height: 1.55;
+  margin-bottom: 28px;
+}
+
+.book {
+  padding: 15px 22px;
+  border-radius: var(--r-md);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+.book:hover {
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 900px) {
+  .intro {
+    padding-top: 64px;
+  }
+  .title {
+    font-size: 42px;
+  }
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .groups {
+    padding-top: 32px;
+    gap: 44px;
+  }
+  .card {
+    padding: 22px 20px 24px;
+  }
+  .cardName {
+    font-size: 20px;
+  }
+  .groupTitle {
+    font-size: 21px;
+  }
+  .filterRow {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .filterRow::-webkit-scrollbar {
+    display: none;
+  }
+  .consultPanel {
+    grid-template-columns: 1fr;
+  }
+  .consultBody,
+  .priceCol {
+    padding: 36px 26px;
+  }
+  .consultTitle {
+    font-size: 28px;
+  }
+}
+
+/* ---- loading skeleton ---- */
+.skelStack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skelTitle {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+@media (max-width: 900px) {
+  .skelTitle > * {
+    height: 38px;
+  }
+}

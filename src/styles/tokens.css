@@ -1,0 +1,169 @@
+/* Design tokens lifted from "Design specs/Taziey Site.dc.html" */
+:root {
+  /* surfaces */
+  --bg: #f6f7f8;
+  --bg-alt: #e6ecee;
+  --bg-sunk: #dde6e8;
+  --surface: #ffffff;
+  --slot: #e3eaec;
+  --slot-deep: #d4dee0;
+
+  /* ink */
+  --ink: #111417;
+  --ink-2: #41474c;
+  --ink-3: #596066;
+  --ink-4: #676e74;
+  --ink-5: #7d858c;
+  --ink-6: #98a0a6;
+  --ink-7: #a1a9af;
+  --ink-8: #bfc7cc;
+
+  /* brand */
+  --accent: #52bcc3;
+  /* Deliberately the same as --accent: the darkened teal was dropped in favour of the original. */
+  --accent-deep: var(--accent);
+  --accent-soft: #d9f0f2;
+
+  /* lines */
+  --line: rgba(17, 20, 23, 0.09);
+  --line-2: rgba(17, 20, 23, 0.12);
+  --line-3: rgba(17, 20, 23, 0.14);
+  --line-4: rgba(17, 20, 23, 0.18);
+
+  /* type */
+  --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+  --font-body: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+
+  /* layout */
+  --shell: 1200px;
+  --shell-narrow: 1040px;
+  --shell-wide: 1300px;
+  --shell-tight: 1000px;
+  --gutter: 28px;
+  /* Height of the sticky Nav bar — anything else that sticks offsets by this. */
+  --nav-h: 63px;
+
+  /* radii */
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 26px;
+  --r-pill: 99px;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+
+  /* ---- semantic: everything below flips in dark mode ----
+     Use these instead of literal colours so a component never assumes
+     a light background. */
+
+  /* text drawn on top of an --accent fill. The teal is light in BOTH themes,
+     so this stays dark in both — it is intentionally absent from the dark
+     block below. Never use --ink on an accent fill. */
+  --on-accent: #111417;
+
+  /* text drawn on top of an --ink fill (inverts with the ink scale) */
+  --on-ink: #ffffff;
+  /* an --ink fill, hovered */
+  --ink-hover: #2c3338;
+
+  /* translucent washes over the page — tinted with the ink hue */
+  --overlay: rgba(17, 20, 23, 0.1);
+  --overlay-strong: rgba(17, 20, 23, 0.2);
+
+  /* drop shadows */
+  --shadow: rgba(17, 20, 23, 0.08);
+  --shadow-soft: rgba(17, 20, 23, 0.07);
+
+  /* frosted bars and chips sitting over content */
+  --glass: rgba(246, 247, 248, 0.86);
+  --glass-soft: rgba(246, 247, 248, 0.82);
+
+  /* the moving highlight on loading skeletons */
+  --sheen: rgba(255, 255, 255, 0.62);
+  /* hairline ring that separates a cutout (avatar, thumb) from the page */
+  --edge: #ffffff;
+
+  /* status */
+  --danger: #a4322c;
+  --danger-ink: #8c2b25;
+  --danger-bg: #fdecea;
+  --danger-line: rgba(164, 50, 44, 0.35);
+  --danger-line-soft: rgba(164, 50, 44, 0.25);
+  --accent-line: rgba(23, 114, 122, 0.2);
+
+  color-scheme: light;
+}
+
+/* ---------------------------------------------------------------------------
+   Dark theme.
+
+   The provider in `src/lib/useTheme.tsx` (and the inline boot script in
+   index.html) always resolves the user's preference down to an explicit
+   `data-theme="light"` or `data-theme="dark"` on <html>, so the dark palette
+   only has to be written once — there is no `prefers-color-scheme` block to
+   keep in sync.
+
+   Only token values are redefined here. If a component needs a colour that
+   isn't in this list, add a token above rather than hardcoding it.
+   --------------------------------------------------------------------------- */
+:root[data-theme='dark'] {
+  /* surfaces — a cool slate that keeps the teal brand at home */
+  --bg: #101417;
+  --bg-alt: #161c20;
+  --bg-sunk: #1d252a;
+  --surface: #171e22;
+  --slot: #212a2f;
+  --slot-deep: #2a353b;
+
+  /* ink — the scale inverts: --ink is now the brightest, --ink-8 the dimmest */
+  --ink: #eef2f4;
+  --ink-2: #d3dade;
+  --ink-3: #bcc4c9;
+  --ink-4: #a8b1b7;
+  --ink-5: #929ba1;
+  --ink-6: #7c858b;
+  --ink-7: #6b747a;
+  --ink-8: #4d565b;
+
+  /* brand — the teal has enough lift to stay as-is; only its wash goes deep */
+  --accent-soft: #14343a;
+
+  /* lines — light hairlines on a dark ground */
+  --line: rgba(255, 255, 255, 0.09);
+  --line-2: rgba(255, 255, 255, 0.12);
+  --line-3: rgba(255, 255, 255, 0.16);
+  --line-4: rgba(255, 255, 255, 0.22);
+
+  /* semantic */
+  --on-ink: #101417;
+  --ink-hover: #d3dade;
+
+  --overlay: rgba(255, 255, 255, 0.09);
+  --overlay-strong: rgba(255, 255, 255, 0.18);
+
+  --shadow: rgba(0, 0, 0, 0.5);
+  --shadow-soft: rgba(0, 0, 0, 0.4);
+
+  --glass: rgba(16, 20, 23, 0.86);
+  --glass-soft: rgba(16, 20, 23, 0.82);
+
+  --sheen: rgba(255, 255, 255, 0.07);
+  --edge: rgba(255, 255, 255, 0.14);
+
+  --danger: #f28b84;
+  --danger-ink: #f6b3ae;
+  --danger-bg: #341613;
+  --danger-line: rgba(242, 139, 132, 0.35);
+  --danger-line-soft: rgba(242, 139, 132, 0.22);
+  --accent-line: rgba(82, 188, 195, 0.24);
+
+  color-scheme: dark;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --gutter: 20px;
+  }
+}

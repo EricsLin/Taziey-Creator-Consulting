@@ -1,0 +1,163 @@
+.intro {
+  max-width: var(--shell-tight);
+  margin: 0 auto;
+  padding: 104px var(--gutter) 36px;
+  text-align: center;
+  position: relative;
+}
+
+.glow {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 620px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(82, 188, 195, 0.12), transparent 64%);
+  pointer-events: none;
+}
+
+.title {
+  font-weight: 800;
+  font-size: 74px;
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+  margin: 0 0 22px;
+}
+
+.lede {
+  font-size: 20px;
+  line-height: 1.55;
+  color: var(--ink-3);
+  max-width: 48ch;
+  margin: 0 auto;
+  text-wrap: pretty;
+}
+
+/* Form on the left, the direct channels alongside it. */
+.body {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 44px var(--gutter) 96px;
+  display: grid;
+  grid-template-columns: 1.06fr 0.94fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.aside {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.asideHead {
+  margin-bottom: 3px;
+}
+
+.asideNote {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink-3);
+  margin: 8px 0 0;
+  max-width: 40ch;
+}
+
+.card {
+  padding: 24px 26px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  transition: border-color 0.25s ease, transform 0.25s ease;
+  color: var(--ink);
+  display: block;
+}
+.card:hover {
+  border-color: var(--accent);
+  color: var(--ink);
+  transform: translateY(-2px);
+}
+
+.primary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.kicker {
+  font-size: 12.5px;
+  letter-spacing: 0.13em;
+  color: var(--ink-5);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.handleLg {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 23px;
+  letter-spacing: -0.03em;
+  word-break: break-word;
+}
+
+.handle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.03em;
+}
+
+.chev {
+  font-size: 24px;
+  color: var(--accent-deep);
+  flex-shrink: 0;
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+}
+
+.note {
+  padding: 22px 26px;
+  border: 1px dashed var(--line-4);
+  border-radius: var(--r-lg);
+  color: var(--ink-5);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+@media (max-width: 940px) {
+  .body {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .asideNote {
+    max-width: none;
+  }
+}
+
+@media (max-width: 700px) {
+  .intro {
+    padding-top: 72px;
+  }
+  .title {
+    font-size: 46px;
+  }
+  .lede {
+    font-size: 18px;
+  }
+  .glow {
+    display: none;
+  }
+  .pair {
+    grid-template-columns: 1fr;
+  }
+  .card,
+  .note {
+    padding: 22px;
+  }
+}

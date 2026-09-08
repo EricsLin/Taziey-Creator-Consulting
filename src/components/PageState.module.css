@@ -1,0 +1,7 @@
+.wrap {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 140px var(--gutter);
+  color: var(--ink-5);
+  font-size: 16px;
+}

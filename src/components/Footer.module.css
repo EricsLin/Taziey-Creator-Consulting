@@ -1,0 +1,35 @@
+.footer {
+  border-top: 1px solid var(--line);
+  padding: 36px var(--gutter);
+  background: var(--bg-alt);
+}
+
+.inner {
+  max-width: var(--shell);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.copy {
+  font-size: 14px;
+  color: var(--ink-6);
+}
+
+.links {
+  display: flex;
+  gap: 22px;
+  font-size: 14px;
+  color: var(--ink-5);
+  flex-wrap: wrap;
+}
+
+.links a {
+  color: var(--ink-5);
+}
+.links a:hover {
+  color: var(--accent-deep);
+}

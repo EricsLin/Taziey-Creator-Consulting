@@ -1,0 +1,126 @@
+/* Mirrors the real home sections' widths and rhythm so the page doesn't
+   jump when content lands. */
+.hero {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 100px var(--gutter) 84px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.badge {
+  margin-bottom: 16px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.strip {
+  background: var(--bg-alt);
+  padding: 46px 0 44px;
+}
+
+.stripGrid {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.work {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 88px var(--gutter);
+}
+
+.workGrid {
+  margin-top: 34px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+.thumb {
+  aspect-ratio: 16 / 9;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rail {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 36px var(--gutter) 88px;
+}
+
+.railPanel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 52px 46px;
+}
+
+.railGrid {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 20px;
+}
+
+.stats {
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 0 var(--gutter) 96px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.stat {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 38px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+@media (max-width: 900px) {
+  .hero {
+    padding-top: 68px;
+    padding-bottom: 60px;
+  }
+  .stripGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .workGrid,
+  .stats {
+    grid-template-columns: 1fr;
+  }
+  .railGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .railPanel {
+    padding: 38px 26px;
+  }
+}
+
+@media (max-width: 620px) {
+  .stripGrid {
+    grid-template-columns: 1fr;
+  }
+  .railGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

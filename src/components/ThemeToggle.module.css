@@ -1,0 +1,59 @@
+.toggle {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-pill);
+  color: var(--ink-5);
+  transition: color 0.22s ease, background 0.22s ease;
+}
+
+.toggle:hover {
+  color: var(--ink);
+  background: var(--bg-sunk);
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Both icons share this one cell so they can crossfade in place. */
+.icons {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.icon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transition: opacity 0.28s var(--ease-out), transform 0.28s var(--ease-out);
+}
+
+.icon svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Show the icon for the theme you'd get by clicking: a moon while light. */
+.icons[data-theme-state='light'] .icon--sun,
+.icons[data-theme-state='dark'] .icon--moon {
+  opacity: 0;
+  transform: rotate(-60deg) scale(0.6);
+}
+
+.icons[data-theme-state='light'] .icon--moon,
+.icons[data-theme-state='dark'] .icon--sun {
+  opacity: 1;
+  transform: none;
+}
