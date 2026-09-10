@@ -1,5 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { Layout } from '@/components/Layout'
+import { VideoModalProvider } from '@/components/VideoModal'
 import { AuthProvider } from '@/lib/auth'
 import { ThemeProvider } from '@/lib/useTheme'
 import { SiteContentProvider } from '@/lib/useSiteContent'
@@ -26,27 +27,29 @@ export default function App() {
       <BrowserRouter>
         <AuthProvider>
           <SiteContentProvider>
-            <Routes>
-              <Route element={<Layout />}>
-                <Route index element={<Home />} />
-                <Route path="services" element={<Services />} />
-                <Route path="content" element={<Content />} />
-                <Route path="contact" element={<Contact />} />
-                <Route path="*" element={<NotFound />} />
-              </Route>
+            <VideoModalProvider>
+              <Routes>
+                <Route element={<Layout />}>
+                  <Route index element={<Home />} />
+                  <Route path="services" element={<Services />} />
+                  <Route path="content" element={<Content />} />
+                  <Route path="contact" element={<Contact />} />
+                  <Route path="*" element={<NotFound />} />
+                </Route>
 
-              {/* Its own shell — the admin doesn't wear the site nav or footer. */}
-              <Route path="admin" element={<AdminLayout />}>
-                <Route index element={<Dashboard />} />
-                <Route path="videos" element={<VideosEditor />} />
-                <Route path="packaging" element={<PackagingEditor />} />
-                <Route path="creators" element={<CreatorsEditor />} />
-                <Route path="services" element={<ServicesEditor />} />
-                <Route path="categories" element={<CategoriesEditor />} />
-                <Route path="stats" element={<StatsEditor />} />
-                <Route path="contact" element={<ContactEditor />} />
-              </Route>
-            </Routes>
+                {/* Its own shell — the admin doesn't wear the site nav or footer. */}
+                <Route path="admin" element={<AdminLayout />}>
+                  <Route index element={<Dashboard />} />
+                  <Route path="videos" element={<VideosEditor />} />
+                  <Route path="packaging" element={<PackagingEditor />} />
+                  <Route path="creators" element={<CreatorsEditor />} />
+                  <Route path="services" element={<ServicesEditor />} />
+                  <Route path="categories" element={<CategoriesEditor />} />
+                  <Route path="stats" element={<StatsEditor />} />
+                  <Route path="contact" element={<ContactEditor />} />
+                </Route>
+              </Routes>
+            </VideoModalProvider>
           </SiteContentProvider>
         </AuthProvider>
       </BrowserRouter>

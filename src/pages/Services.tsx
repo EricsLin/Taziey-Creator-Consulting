@@ -1,16 +1,14 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { PageState } from '@/components/PageState'
 import { Skeleton, SkeletonScreen } from '@/components/Skeleton'
 import { SmartLink } from '@/components/SmartLink'
 import { useCopy, useSiteContent } from '@/lib/useSiteContent'
-import type { Service } from '@/types'
+import type { Service, ServiceCategory } from '@/types'
 import styles from './Services.module.css'
-
-const ALL = 'All'
 
 /**
  * Every description opens with a "what it is" sentence and follows with the
- * "how it works" detail — splitting them lets the card lead with the point.
+ * "how it works" detail — splitting them lets the panel lead with the point.
  */
 function splitDescription(description: string): [string, string] {
   const end = description.indexOf('. ')
@@ -18,19 +16,136 @@ function splitDescription(description: string): [string, string] {
   return [description.slice(0, end + 1), description.slice(end + 2)]
 }
 
-function ServiceCard({ service, index }: { service: Service; index: number }) {
-  const [lead, detail] = splitDescription(service.description)
+/**
+ * One category: heading, blurb, a column of its services, and the detail panel
+ * beside them. Exactly one service per section is open at a time — the panel
+ * would read as broken empty, so selecting is a switch, not a toggle.
+ *
+ * Wide screens put the panel to the right of the column; below 860px the two
+ * stack and the panel sits under the buttons.
+ */
+function ServiceGroup({
+  category,
+  items,
+  numberOf,
+}: {
+  category: ServiceCategory
+  items: Service[]
+  numberOf: Map<string, number>
+}) {
+  const [openId, setOpenId] = useState(items[0].id)
+  const railRef = useRef<HTMLDivElement>(null)
+  const buttonRefs = useRef(new Map<string, HTMLButtonElement>())
+  // Where the accent marker sits, so it can slide between buttons.
+  const [marker, setMarker] = useState<{ y: number; h: number } | null>(null)
+
+  // Falls back to the first service if the open one vanishes on a content edit.
+  const open = items.find((service) => service.id === openId) ?? items[0]
+
+  const placeMarker = useCallback(() => {
+    const button = buttonRefs.current.get(open.id)
+    if (!button) return
+    setMarker({ y: button.offsetTop, h: button.offsetHeight })
+  }, [open.id])
+
+  // Measure before paint so the marker never shows at a stale position.
+  useLayoutEffect(placeMarker, [placeMarker])
+
+  // Buttons change height when the rail reflows, which moves the marker.
+  useEffect(() => {
+    const rail = railRef.current
+    if (!rail) return
+    const observer = new ResizeObserver(placeMarker)
+    observer.observe(rail)
+    return () => observer.disconnect()
+  }, [placeMarker])
+
+  /** Up/down walks the list, the way a tab strip is expected to behave. */
+  function onKeyDown(event: React.KeyboardEvent) {
+    const step = event.key === 'ArrowDown' ? 1 : event.key === 'ArrowUp' ? -1 : 0
+    const first = event.key === 'Home'
+    const last = event.key === 'End'
+    if (!step && !first && !last) return
+    event.preventDefault()
+    const at = items.findIndex((service) => service.id === open.id)
+    const next = first ? 0 : last ? items.length - 1 : (at + step + items.length) % items.length
+    setOpenId(items[next].id)
+    buttonRefs.current.get(items[next].id)?.focus()
+  }
+
+  const [lead, detail] = splitDescription(open.description)
+  const panelId = `services-panel-${category.id}`
+
   return (
-    <article className={styles.card}>
-      <span className={styles.num}>{String(index).padStart(2, '0')}</span>
-      <h3 className={styles.cardName}>{service.name}</h3>
-      <p className={styles.cardLead}>{lead}</p>
-      {detail && <p className={styles.cardDetail}>{detail}</p>}
-    </article>
+    <div className={styles.group}>
+      <div className={styles.groupHead}>
+        <h2 className={styles.groupTitle}>{category.name}</h2>
+        <p className={styles.groupBlurb}>{category.blurb}</p>
+      </div>
+
+      <div className={styles.groupBody}>
+        <div
+          className={styles.rail}
+          ref={railRef}
+          role="tablist"
+          aria-orientation="vertical"
+          aria-label={category.name}
+          onKeyDown={onKeyDown}
+        >
+          <span
+            className={styles.marker}
+            aria-hidden="true"
+            style={
+              marker
+                ? ({
+                    '--marker-y': `${marker.y}px`,
+                    '--marker-h': `${marker.h}px`,
+                  } as React.CSSProperties)
+                : { opacity: 0 }
+            }
+          />
+          {items.map((service) => {
+            const isOpen = service.id === open.id
+            return (
+              <button
+                key={service.id}
+                type="button"
+                role="tab"
+                id={`service-tab-${service.id}`}
+                ref={(node) => {
+                  if (node) buttonRefs.current.set(service.id, node)
+                  else buttonRefs.current.delete(service.id)
+                }}
+                className={`${styles.pill} ${isOpen ? styles.pillOpen : ''}`}
+                aria-selected={isOpen}
+                aria-controls={panelId}
+                tabIndex={isOpen ? 0 : -1}
+                onClick={() => setOpenId(service.id)}
+              >
+                <span className={styles.pillNum}>
+                  {String(numberOf.get(service.id) ?? 0).padStart(2, '0')}
+                </span>
+                <span className={styles.pillName}>{service.name}</span>
+                <span className={styles.pillMark} aria-hidden="true" />
+              </button>
+            )
+          })}
+        </div>
+
+        <div className={styles.panel} id={panelId} role="tabpanel" aria-labelledby={`service-tab-${open.id}`}>
+          {/* Keyed so switching services replays the entrance animation. */}
+          <div className={styles.panelBody} key={open.id}>
+            <h3 className={styles.panelName}>{open.name}</h3>
+            <p className={styles.panelLead}>{lead}</p>
+            {detail && <p className={styles.panelDetail}>{detail}</p>}
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
-/** Placeholder shaped like the real page — same widths, same grid. */
+/** Placeholder shaped like the real page — same widths, same rails. */
 function ServicesSkeleton() {
   return (
     <SkeletonScreen>
@@ -46,14 +161,6 @@ function ServicesSkeleton() {
         </div>
       </section>
 
-      <div className={styles.filters}>
-        <div className={styles.filterRow}>
-          {[120, 96, 132, 108].map((w, i) => (
-            <Skeleton key={i} w={w} h={37} radius="var(--r-pill)" />
-          ))}
-        </div>
-      </div>
-
       <section className={styles.groups}>
         {[0, 1].map((group) => (
           <div key={group} className={styles.group}>
@@ -61,15 +168,17 @@ function ServicesSkeleton() {
               <Skeleton w={180} h={25} />
               <Skeleton w={220} h={15} />
             </div>
-            <div className={styles.grid}>
-              {[0, 1, 2, 3].map((i) => (
-                <div key={i} className={`${styles.card} ${styles.skelStack}`}>
-                  <Skeleton w={26} h={12} />
-                  <Skeleton w="70%" h={20} />
-                  <Skeleton w="95%" h={15} />
-                  <Skeleton w="80%" h={15} />
-                </div>
-              ))}
+            <div className={styles.groupBody}>
+              <div className={styles.rail}>
+                {[0, 1, 2, 3].map((i) => (
+                  <Skeleton key={i} w="100%" h={52} radius="14px" />
+                ))}
+              </div>
+              <div className={`${styles.panelBody} ${styles.skelStack}`}>
+                <Skeleton w="55%" h={22} />
+                <Skeleton w="92%" h={16} />
+                <Skeleton w="78%" h={16} />
+              </div>
             </div>
           </div>
         ))}
@@ -81,7 +190,6 @@ function ServicesSkeleton() {
 export function Services() {
   const { content, loading, error } = useSiteContent()
   const copy = useCopy()
-  const [filter, setFilter] = useState<string>(ALL)
 
   const groups = useMemo(() => {
     if (!content) return []
@@ -93,8 +201,7 @@ export function Services() {
       .filter((group) => group.items.length > 0)
   }, [content])
 
-  // Numbering runs across the whole list, not per group, so a card keeps its
-  // number when a filter is applied.
+  // Numbering runs across the whole list, not per group.
   const numberOf = useMemo(() => {
     const map = new Map<string, number>()
     content?.services.forEach((service, i) => map.set(service.id, i + 1))
@@ -104,8 +211,6 @@ export function Services() {
   if (loading) return <ServicesSkeleton />
   if (error || !content) return <PageState>Couldn&rsquo;t load the services list.</PageState>
 
-  const shown = filter === ALL ? groups : groups.filter((g) => g.category.name === filter)
-
   return (
     <>
       <section className={styles.intro}>
@@ -114,48 +219,14 @@ export function Services() {
         <p className={styles.lede}>{copy('services.lede')}</p>
       </section>
 
-      <section className={styles.filters} aria-label="Filter services by area">
-        <div className={styles.filterRow}>
-          <button
-            type="button"
-            className={`${styles.chip} ${filter === ALL ? styles['chip--on'] : ''}`}
-            aria-pressed={filter === ALL}
-            onClick={() => setFilter(ALL)}
-          >
-            {copy('services.filter_all_label', 'Everything')}{' '}
-            <span className={styles.chipCount}>{content.services.length}</span>
-          </button>
-          {groups.map((group) => (
-            <button
-              key={group.category.id}
-              type="button"
-              className={`${styles.chip} ${filter === group.category.name ? styles['chip--on'] : ''}`}
-              aria-pressed={filter === group.category.name}
-              onClick={() => setFilter(group.category.name)}
-            >
-              {group.category.name} <span className={styles.chipCount}>{group.items.length}</span>
-            </button>
-          ))}
-        </div>
-      </section>
-
       <section className={styles.groups}>
-        {shown.map((group) => (
-          <div key={group.category.id} className={styles.group}>
-            <div className={styles.groupHead}>
-              <h2 className={styles.groupTitle}>{group.category.name}</h2>
-              <p className={styles.groupBlurb}>{group.category.blurb}</p>
-            </div>
-            <div className={styles.grid}>
-              {group.items.map((service) => (
-                <ServiceCard
-                  key={service.id}
-                  service={service}
-                  index={numberOf.get(service.id) ?? 0}
-                />
-              ))}
-            </div>
-          </div>
+        {groups.map((group) => (
+          <ServiceGroup
+            key={group.category.id}
+            category={group.category}
+            items={group.items}
+            numberOf={numberOf}
+          />
         ))}
       </section>
 

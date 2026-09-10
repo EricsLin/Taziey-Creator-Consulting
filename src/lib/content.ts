@@ -93,6 +93,13 @@ const toVideo = (r: Row): Video => ({
   thumbnailUrl: r.thumbnail_url,
   youtubeUrl: r.youtube_url,
   youtubeId: r.youtube_id,
+  game: r.game ?? '',
+  duration: r.duration ?? '',
+  publishedAt: r.published_at,
+  likes: r.likes ?? '',
+  channelUrl: r.channel_url,
+  summary: r.summary ?? '',
+  highlights: r.highlights ?? '',
   featured: !!r.featured,
   rotatorColumn: r.rotator_column,
   rotatorPosition: r.rotator_position,
@@ -106,6 +113,7 @@ const toFlip = (r: Row): PackagingFlip => ({
   title: r.title ?? '',
   beforeUrl: r.before_url,
   afterUrl: r.after_url,
+  videoId: r.video_id,
   order: r.sort_order,
 })
 
@@ -122,17 +130,35 @@ const toChannel = (r: Row): ContactChannel => ({
 /* Derived views over the content -------------------------------------------- */
 
 /**
- * Column-major slide order for the home page rotator, built from each video's
- * `rotator_column` / `rotator_position`. Replaces the hardcoded id list the
- * seed data used to carry.
+ * The rotator's videos bucketed by their `rotator_column`, each column ordered
+ * by `rotator_position`. Only `heroSlides` reads this now that the home page
+ * shows one filmstrip instead of three crossfading columns.
  */
-export function rotatorColumns(videos: Video[]): Video[][] {
+function rotatorColumns(videos: Video[]): Video[][] {
   const columns: Video[][] = [[], [], []]
   videos
     .filter((v) => v.rotatorColumn && v.rotatorColumn >= 1 && v.rotatorColumn <= 3)
     .sort((a, b) => (a.rotatorPosition ?? 0) - (b.rotatorPosition ?? 0))
     .forEach((v) => columns[v.rotatorColumn! - 1].push(v))
   return columns.filter((c) => c.length > 0)
+}
+
+/**
+ * Flat slide order for the hero filmstrip. Reads the same
+ * `rotator_column` / `rotator_position` fields as the grid did, but walks them
+ * row-major so consecutive slides come from different columns and the strip
+ * doesn't show one creator three times in a row.
+ */
+export function heroSlides(videos: Video[]): Video[] {
+  const columns = rotatorColumns(videos)
+  const depth = Math.max(0, ...columns.map((c) => c.length))
+  const slides: Video[] = []
+  for (let row = 0; row < depth; row += 1) {
+    for (const column of columns) {
+      if (column[row]) slides.push(column[row])
+    }
+  }
+  return slides.length > 0 ? slides : videos.filter((v) => v.featured)
 }
 
 export function channelOfKind(

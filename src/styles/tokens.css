@@ -19,10 +19,10 @@
   --ink-8: #bfc7cc;
 
   /* brand */
-  --accent: #52bcc3;
+  --accent: #35E0F1;
   /* Deliberately the same as --accent: the darkened teal was dropped in favour of the original. */
   --accent-deep: var(--accent);
-  --accent-soft: #d9f0f2;
+  --accent-soft: #d6f8fc;
 
   /* lines */
   --line: rgba(17, 20, 23, 0.09);
@@ -62,6 +62,17 @@
      so this stays dark in both — it is intentionally absent from the dark
      block below. Never use --ink on an accent fill. */
   --on-accent: #111417;
+  /* boxes and hairlines drawn on top of an --accent fill. Same reasoning as
+     --on-accent: the fill is light in both themes, so these stay ink-tinted
+     in both and are deliberately absent from the dark block below.
+     Note there is no translucent wash here on purpose — ink at low alpha over
+     the teal turns a muddy denim, so a box on accent is either outlined
+     (transparent, --on-accent-line) or solid ink (--on-accent-fill). */
+  --on-accent-line: rgba(17, 20, 23, 0.38);
+  /* a solid ink box on an accent fill, and the text on it */
+  --on-accent-fill: #111417;
+  --on-accent-fill-hover: #2c3338;
+  --on-accent-fill-ink: #ffffff;
 
   /* text drawn on top of an --ink fill (inverts with the ink scale) */
   --on-ink: #ffffff;
@@ -91,7 +102,7 @@
   --danger-bg: #fdecea;
   --danger-line: rgba(164, 50, 44, 0.35);
   --danger-line-soft: rgba(164, 50, 44, 0.25);
-  --accent-line: rgba(23, 114, 122, 0.2);
+  --accent-line: rgba(21, 138, 150, 0.2);
 
   color-scheme: light;
 }
@@ -128,7 +139,7 @@
   --ink-8: #4d565b;
 
   /* brand — the teal has enough lift to stay as-is; only its wash goes deep */
-  --accent-soft: #14343a;
+  --accent-soft: #0d3b42;
 
   /* lines — light hairlines on a dark ground */
   --line: rgba(255, 255, 255, 0.09);
@@ -157,7 +168,7 @@
   --danger-bg: #341613;
   --danger-line: rgba(242, 139, 132, 0.35);
   --danger-line-soft: rgba(242, 139, 132, 0.22);
-  --accent-line: rgba(82, 188, 195, 0.24);
+  --accent-line: rgba(53, 224, 241, 0.24);
 
   color-scheme: dark;
 }

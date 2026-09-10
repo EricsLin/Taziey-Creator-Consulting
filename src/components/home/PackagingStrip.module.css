@@ -1,14 +1,11 @@
 .band {
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  background: var(--bg-alt);
-  padding: 46px 0 44px;
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 0 var(--gutter) 96px;
 }
 
 .head {
-  max-width: var(--shell);
-  margin: 0 auto 30px;
-  padding-inline: var(--gutter);
+  margin: 0 0 30px;
   display: flex;
   align-items: baseline;
   gap: 16px;
@@ -21,16 +18,32 @@
 }
 
 .grid {
-  max-width: var(--shell);
-  margin: 0 auto;
-  padding-inline: var(--gutter);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 22px;
 }
 
 .card {
+  /* Lifts rather than scales. A scale resamples the thumbnail for the whole
+     transition and it reads as blur; a translate leaves the pixels alone. */
   transition: transform 1s var(--ease-out);
+}
+
+/* Wraps the frame when the flip links to a video, so the whole thumbnail is
+   the hit target without nesting the animated layers inside a button. */
+.frameButton {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--r-md);
+}
+
+.frameButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .frame {
@@ -42,6 +55,29 @@
   border: 1px solid var(--line);
   background: var(--slot-deep);
   box-shadow: 0 4px 16px var(--shadow);
+  transition: box-shadow 1s var(--ease-out);
+}
+
+.card:hover .frame,
+.card[data-revealed='true'] /* Wraps the frame when the flip links to a video, so the whole thumbnail is
+   the hit target without nesting the animated layers inside a button. */
+.frameButton {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: var(--r-md);
+}
+
+.frameButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.frame {
+  box-shadow: 0 12px 30px var(--shadow);
 }
 
 .layer {
@@ -64,7 +100,7 @@
   width: 3px;
   pointer-events: none;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0), #fff 45%, rgba(255, 255, 255, 0));
-  box-shadow: 0 0 20px 5px rgba(82, 188, 195, 0.6);
+  box-shadow: 0 0 20px 5px rgba(53, 224, 241, 0.6);
   transition: left 1s var(--ease-inout);
 }
 

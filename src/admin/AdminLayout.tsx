@@ -63,7 +63,7 @@ export function AdminLayout() {
     <div className={styles.shell}>
       <aside className={styles.sidebar}>
         <div className={styles.brand}>
-          <span className={styles.mark}>T</span> Taziey admin
+          <img className={styles.mark} src="/icon.png" alt="" width={28} height={28} /> Taziey admin
         </div>
 
         {SECTIONS.map((section) => (

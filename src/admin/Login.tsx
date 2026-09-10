@@ -31,7 +31,7 @@ export function Login({ notice }: { notice?: string }) {
     <div className={styles.login}>
       <form className={styles.loginCard} onSubmit={handleSubmit}>
         <div className={styles.brand} style={{ padding: 0 }}>
-          <span className={styles.mark}>T</span> Taziey admin
+          <img className={styles.mark} src="/icon.png" alt="" width={28} height={28} /> Taziey admin
         </div>
         <h1 className={styles.loginTitle}>Sign in</h1>
         <p className={styles.loginNote}>

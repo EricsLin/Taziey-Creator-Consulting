@@ -52,6 +52,11 @@ export interface VideoMeta {
   creator: string
   views: string
   thumbnailUrl: string
+  /** Detail fields for the popup; blank when the lookup fell back to oEmbed. */
+  likes: string
+  duration: string
+  publishedAt: string | null
+  channelUrl: string | null
   notice?: string
 }
 

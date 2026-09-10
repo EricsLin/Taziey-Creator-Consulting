@@ -3,58 +3,45 @@
 .hero {
   max-width: var(--shell);
   margin: 0 auto;
-  padding: 100px var(--gutter) 84px;
+  padding: 64px var(--gutter) 76px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(220px, 350px) minmax(0, 1fr);
+  gap: 56px;
+  align-items: center;
+}
+
+.slogan {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 14px;
+  gap: 10px;
 }
 
-.badge {
-  margin-bottom: 16px;
+.eyebrow {
+  margin-bottom: 12px;
 }
 
-.actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 24px;
+.frame {
+  aspect-ratio: 16 / 9;
 }
 
 .strip {
-  background: var(--bg-alt);
-  padding: 46px 0 44px;
+  max-width: var(--shell);
+  margin: 0 auto;
+  padding: 0 var(--gutter) 96px;
 }
 
 .stripGrid {
-  max-width: var(--shell);
-  margin: 0 auto;
-  padding: 0 var(--gutter);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 18px;
 }
 
-.work {
-  max-width: var(--shell);
-  margin: 0 auto;
-  padding: 88px var(--gutter);
-}
-
-.workGrid {
-  margin-top: 34px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 26px;
-}
-
 .thumb {
   aspect-ratio: 16 / 9;
-}
-
-.card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
 }
 
 .rail {
@@ -96,15 +83,21 @@
   gap: 14px;
 }
 
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+  }
+}
+
 @media (max-width: 900px) {
   .hero {
-    padding-top: 68px;
-    padding-bottom: 60px;
+    padding: 52px var(--gutter) 64px;
   }
   .stripGrid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .workGrid,
   .stats {
     grid-template-columns: 1fr;
   }

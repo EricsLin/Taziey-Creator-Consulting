@@ -48,6 +48,20 @@ export interface Video {
   thumbnailUrl?: string | null
   youtubeUrl?: string | null
   youtubeId?: string | null
+  /* ---- detail fields, shown only in the video popup ---- */
+  /** Game or subject featured in the video. */
+  game: string
+  /** Runtime as displayed, e.g. "14:22". */
+  duration: string
+  /** ISO date the video went live, or null if unknown. */
+  publishedAt?: string | null
+  /** Pre-formatted, e.g. "182K". */
+  likes: string
+  channelUrl?: string | null
+  /** Our own write-up of the collaboration. */
+  summary: string
+  /** One bullet per line, as typed in the admin. */
+  highlights: string
   /** Surface on the home page "Videos we helped shape" rotator. */
   featured: boolean
   /** Which rotator column this sits in (1–3), and where within it. */
@@ -65,6 +79,8 @@ export interface PackagingFlip {
   title: string
   beforeUrl?: string | null
   afterUrl?: string | null
+  /** The `Video` this flip repackaged, if one is linked. Drives the popup. */
+  videoId?: string | null
   order: number
 }
 

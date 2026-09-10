@@ -1,3 +1,4 @@
+import { ChannelIcon } from '@/components/ChannelIcon'
 import { channelOfKind } from '@/lib/content'
 import { useCopy, useSiteContent } from '@/lib/useSiteContent'
 import styles from './ContactCta.module.css'
@@ -23,7 +24,11 @@ export function ContactCta() {
             }`.trim()
             const body = (
               <>
-                {channel.handle} <span className={styles.kind}>{channel.label}</span>
+                <span className={styles.handle}>
+                  <ChannelIcon kind={kind} size={17} />
+                  {channel.handle}
+                </span>
+                <span className={styles.kind}>{channel.label}</span>
               </>
             )
             // A channel with no link — Discord, typically — is a plain row.

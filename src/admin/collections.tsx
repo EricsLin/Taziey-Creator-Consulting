@@ -15,6 +15,24 @@ function useNames(table: TableName): string[] {
   return names
 }
 
+/** Every video as a select option — `video_id` values against readable titles. */
+function useVideoOptions(): Array<{ value: string; label: string }> {
+  const [options, setOptions] = useState<Array<{ value: string; label: string }>>([])
+  useEffect(() => {
+    listRows('videos')
+      .then((rows) =>
+        setOptions(
+          rows.map((r) => ({
+            value: String(r.id),
+            label: [r.title, r.creator].filter(Boolean).join(' — ') || 'Untitled',
+          })),
+        ),
+      )
+      .catch(() => setOptions([]))
+  }, [])
+  return options
+}
+
 export function CategoriesEditor() {
   return (
     <CollectionEditor
@@ -94,22 +112,39 @@ export function StatsEditor() {
 }
 
 export function PackagingEditor() {
+  const videos = useVideoOptions()
   return (
     <CollectionEditor
       table="packaging_flips"
       title="Packaging flips"
-      blurb="The before/after wipe strip on the home page. Four cards fit the row."
+      blurb="The before/after wipe strip on the home page. Four cards fit the row. Link a flip to a video and its card becomes clickable, opening the same detail popup as the portfolio — the stats and write-up come from that video row, so there is nothing to re-enter here."
       fields={[
         { name: 'creator', label: 'Creator' },
         { name: 'lift', label: 'Result', placeholder: '+41% CTR' },
         { name: 'title', label: 'Video title', full: true },
+        {
+          name: 'video_id',
+          label: 'Linked video',
+          type: 'select',
+          options: videos,
+          nullable: true,
+          full: true,
+          hint: 'From the Videos table. Leave empty to keep the card non-clickable.',
+        },
         { name: 'before_url', label: 'Before thumbnail URL', type: 'image', nullable: true },
         { name: 'after_url', label: 'After thumbnail URL', type: 'image', nullable: true },
       ]}
       titleOf={(r) => r.title}
       subtitleOf={(r) => `${r.creator} · ${r.lift}`}
       thumbOf={(r) => r.after_url}
-      newRow={() => ({ creator: '', lift: '', title: 'New flip', before_url: null, after_url: null })}
+      newRow={() => ({
+        creator: '',
+        lift: '',
+        title: 'New flip',
+        video_id: null,
+        before_url: null,
+        after_url: null,
+      })}
       addLabel="Add flip"
     />
   )
@@ -142,7 +177,7 @@ export function VideosEditor() {
     <CollectionEditor
       table="videos"
       title="Videos"
-      blurb="The full portfolio on /content. Set a rotator column (1–3) and position to also surface a video in the home page “Videos we helped shape” block; leave the column empty to keep it off the home page."
+      blurb="The full portfolio on /content. Everything below the thumbnail fills the popup that opens when a visitor clicks any thumbnail on the site, so the write-up and highlights are worth filling in. Set a rotator column (1–3) and position to also surface a video in the home page “Videos we helped shape” block; leave the column empty to keep it off the home page."
       fields={[
         { name: 'title', label: 'Title', full: true },
         { name: 'creator', label: 'Creator' },
@@ -150,6 +185,29 @@ export function VideosEditor() {
         { name: 'niche', label: 'Niche', type: 'select', options: niches },
         { name: 'youtube_url', label: 'YouTube URL', nullable: true },
         { name: 'thumbnail_url', label: 'Thumbnail URL', type: 'image', nullable: true, full: true },
+        { name: 'game', label: 'Game', placeholder: 'Minecraft' },
+        { name: 'likes', label: 'Likes', placeholder: '182K' },
+        { name: 'duration', label: 'Runtime', placeholder: '14:22' },
+        { name: 'published_at', label: 'Published', type: 'date', nullable: true },
+        {
+          name: 'channel_url',
+          label: 'Channel URL',
+          nullable: true,
+          full: true,
+          placeholder: 'https://www.youtube.com/@channel',
+        },
+        {
+          name: 'summary',
+          label: 'Write-up',
+          type: 'textarea',
+          hint: 'The paragraph in the popup — what the video was and what we did on it.',
+        },
+        {
+          name: 'highlights',
+          label: 'Highlights',
+          type: 'textarea',
+          hint: 'One bullet per line. Shown as a list under the write-up.',
+        },
         { name: 'featured', label: 'Featured', type: 'checkbox' },
         {
           name: 'rotator_column',
@@ -170,6 +228,11 @@ export function VideosEditor() {
         creator: '',
         views: '',
         niche: niches[0] ?? '',
+        game: '',
+        likes: '',
+        duration: '',
+        summary: '',
+        highlights: '',
         featured: false,
       })}
       addLabel="Add blank video"

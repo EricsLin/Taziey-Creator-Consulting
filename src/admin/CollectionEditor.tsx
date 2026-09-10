@@ -6,9 +6,10 @@ export interface FieldDef {
   /** Column name on the table. */
   name: string
   label: string
-  type?: 'text' | 'textarea' | 'number' | 'select' | 'checkbox' | 'image'
-  /** Choices for `select`. An empty first option is added when `nullable`. */
-  options?: string[]
+  type?: 'text' | 'textarea' | 'number' | 'select' | 'checkbox' | 'image' | 'date'
+  /** Choices for `select` — a bare string is its own value. An empty first
+   *  option is added when `nullable`. */
+  options?: Array<string | { value: string; label: string }>
   /** Blank input saves null rather than an empty string. */
   nullable?: boolean
   hint?: string
@@ -407,17 +408,21 @@ function Field({
           onChange={(e) => onChange(e.target.value === '' && field.nullable ? null : e.target.value)}
         >
           {field.nullable && <option value="">—</option>}
-          {(field.options ?? []).map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
+          {(field.options ?? []).map((option) => {
+            const { value: v, label } =
+              typeof option === 'string' ? { value: option, label: option } : option
+            return (
+              <option key={v} value={v}>
+                {label}
+              </option>
+            )
+          })}
         </select>
       ) : (
         <input
           id={id}
           className={styles.input}
-          type={field.type === 'number' ? 'number' : 'text'}
+          type={field.type === 'number' ? 'number' : field.type === 'date' ? 'date' : 'text'}
           value={text}
           placeholder={field.placeholder}
           onChange={(e) => {

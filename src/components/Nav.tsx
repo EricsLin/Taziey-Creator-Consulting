@@ -5,8 +5,8 @@ import styles from './Nav.module.css'
 
 const NAV = [
   { to: '/', label: 'Home' },
-  { to: '/services', label: 'Services' },
   { to: '/content', label: 'Content' },
+  { to: '/services', label: 'Services' },
   { to: '/contact', label: 'Contact' },
 ]
 
@@ -17,7 +17,7 @@ export function Nav() {
     <header className={styles.bar}>
       <nav className={styles.inner}>
         <Link to="/" className={styles.brand}>
-          <span className={styles.mark}>{copy('brand.mark', 'T')}</span>
+          <img className={styles.mark} src="/icon.png" alt="" width={30} height={30} />
           <span className={styles.wordmark}>{copy('brand.wordmark', 'Taziey')}</span>
         </Link>
         <div className={styles.links}>

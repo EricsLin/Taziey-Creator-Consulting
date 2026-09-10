@@ -18,7 +18,7 @@
   transition: border-color 0.25s ease, transform 0.25s ease;
 }
 .card:hover {
-  border-color: rgba(82, 188, 195, 0.5);
+  border-color: rgba(53, 224, 241, 0.5);
   transform: translateY(-3px);
 }
 

@@ -27,8 +27,20 @@
   flex-wrap: wrap;
 }
 
+.links a,
+.links span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
 .links a {
   color: var(--ink-5);
+}
+
+.links svg {
+  flex-shrink: 0;
+  opacity: 0.85;
 }
 .links a:hover {
   color: var(--accent-deep);

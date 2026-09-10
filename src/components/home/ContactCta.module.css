@@ -39,6 +39,8 @@
   flex: 1 1 290px;
 }
 
+/* These rows sit on the accent panel, which is light in both themes — so they
+   use the theme-invariant --on-accent-* tokens, never the ink scale. */
 .row {
   padding: 14px 20px;
   border-radius: var(--r-md);
@@ -47,32 +49,50 @@
   display: flex;
   justify-content: space-between;
   gap: 14px;
-  background: var(--overlay);
-  color: var(--ink);
-  transition: background-color 0.18s ease;
+  background: transparent;
+  border: 1.5px solid var(--on-accent-line);
+  color: var(--on-accent);
+  transition: background-color 0.18s ease, border-color 0.18s ease,
+    color 0.18s ease;
 }
 
 a.row:hover {
   /* Text colour is pinned here so the global `a:hover` rule (higher
-     specificity than `.row`) can't recolour it — only the box changes. */
-  background: var(--overlay-strong);
-  color: var(--ink);
+     specificity than `.row`) can't recolour it. An outline row fills solid on
+     hover, which is also what makes the two secondary rows read as buttons. */
+  background: var(--on-accent-fill);
+  border-color: var(--on-accent-fill);
+  color: var(--on-accent-fill-ink);
 }
 
 .row--primary {
-  background: var(--ink);
-  color: var(--on-ink);
+  background: var(--on-accent-fill);
+  border-color: var(--on-accent-fill);
+  color: var(--on-accent-fill-ink);
 }
 a.row--primary:hover {
-  background: var(--ink-hover);
-  color: var(--on-ink);
+  background: var(--on-accent-fill-hover);
+  border-color: var(--on-accent-fill-hover);
+  color: var(--on-accent-fill-ink);
+}
+
+.handle {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.handle svg {
+  flex-shrink: 0;
+  opacity: 0.85;
 }
 
 .kind {
   opacity: 0.7;
 }
 .row--primary .kind {
-  opacity: 0.6;
+  opacity: 0.65;
 }
 
 @media (max-width: 700px) {

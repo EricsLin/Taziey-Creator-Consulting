@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { ImageSlot } from '@/components/ImageSlot'
 import { PageState } from '@/components/PageState'
+import { useVideoModal } from '@/components/VideoModal'
 import { Skeleton, SkeletonScreen } from '@/components/Skeleton'
 import { useCopy, useSiteContent } from '@/lib/useSiteContent'
 import styles from './Content.module.css'
@@ -46,6 +47,7 @@ function ContentSkeleton() {
 export function Content() {
   const { content, loading, error } = useSiteContent()
   const copy = useCopy()
+  const { open } = useVideoModal()
   const [filter, setFilter] = useState<string | null>(null)
 
   const counts = useMemo(() => {
@@ -100,18 +102,27 @@ export function Content() {
         <section className={styles.grid}>
           {visible.map((video) => (
             <article key={video.id} className={styles.card}>
-              <div className={styles.thumb}>
-                <ImageSlot src={video.thumbnailUrl} alt={video.title} placeholder={video.niche} />
-              </div>
-              <div className={styles.body}>
-                <div className={styles.niche}>{video.niche.toUpperCase()}</div>
-                <div className={styles.cardTitle}>{video.title}</div>
-                <div className={styles.meta}>
-                  <span>{video.creator}</span>
-                  <span className={styles.sep}>&bull;</span>
-                  <span>{video.views} views</span>
+              {/* The whole card opens the detail popup — the stats come before
+                  the trip to YouTube. */}
+              <button
+                type="button"
+                className={styles.cardButton}
+                onClick={() => open(video)}
+                aria-label={`${video.title} — view details`}
+              >
+                <div className={styles.thumb}>
+                  <ImageSlot src={video.thumbnailUrl} alt={video.title} placeholder={video.niche} />
                 </div>
-              </div>
+                <div className={styles.body}>
+                  <div className={styles.niche}>{video.niche.toUpperCase()}</div>
+                  <div className={styles.cardTitle}>{video.title}</div>
+                  <div className={styles.meta}>
+                    <span>{video.creator}</span>
+                    <span className={styles.sep}>&bull;</span>
+                    <span>{video.views} views</span>
+                  </div>
+                </div>
+              </button>
             </article>
           ))}
         </section>

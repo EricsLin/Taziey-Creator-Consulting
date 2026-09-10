@@ -14,7 +14,7 @@
   width: 620px;
   height: 420px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(82, 188, 195, 0.12), transparent 64%);
+  background: radial-gradient(circle, rgba(53, 224, 241, 0.12), transparent 64%);
   pointer-events: none;
 }
 
@@ -84,6 +84,25 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+}
+
+.cardBody {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+}
+
+/* Tinted square behind the glyph so the card leads with the channel. */
+.icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: var(--r-sm);
+  background: var(--accent-soft);
+  color: var(--ink-2);
+  flex-shrink: 0;
 }
 
 .kicker {

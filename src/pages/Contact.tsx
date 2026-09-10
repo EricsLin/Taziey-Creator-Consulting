@@ -1,3 +1,4 @@
+import { ChannelIcon } from '@/components/ChannelIcon'
 import { ContactForm } from '@/components/ContactForm'
 import { channelOfKind } from '@/lib/content'
 import { useCopy, useSiteContent } from '@/lib/useSiteContent'
@@ -18,9 +19,14 @@ function Card({
 }) {
   const body = (
     <>
-      <div>
-        <div className={styles.kicker}>{channel.blurb}</div>
-        <div className={handleClass}>{channel.handle}</div>
+      <div className={styles.cardBody}>
+        <span className={styles.icon}>
+          <ChannelIcon kind={channel.kind} size={20} />
+        </span>
+        <div>
+          <div className={styles.kicker}>{channel.blurb}</div>
+          <div className={handleClass}>{channel.handle}</div>
+        </div>
       </div>
       {children}
     </>

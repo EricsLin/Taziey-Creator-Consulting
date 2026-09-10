@@ -1,3 +1,4 @@
+import { ChannelIcon } from './ChannelIcon'
 import { channelOfKind } from '@/lib/content'
 import { useCopy, useSiteContent } from '@/lib/useSiteContent'
 import styles from './Footer.module.css'
@@ -22,11 +23,13 @@ export function Footer() {
                 target={channel.href!.startsWith('http') ? '_blank' : undefined}
                 rel="noreferrer"
               >
+                <ChannelIcon kind={channel.kind} size={16} />
                 {channel.label}
               </a>
             ))}
           {discord && !discord.href && (
             <span>
+              <ChannelIcon kind={discord.kind} size={16} />
               {discord.label}: {discord.handle}
             </span>
           )}

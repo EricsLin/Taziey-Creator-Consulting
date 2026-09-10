@@ -11,8 +11,9 @@ interface Props {
 /**
  * Stages a video from a pasted YouTube URL. The `video-meta` edge function
  * resolves title, channel, thumbnail and — when a YOUTUBE_API_KEY is configured
- * — the view count; the row it stages opens straight into the edit form and is
- * only written once its Save is clicked.
+ * — the view count, likes, runtime and publish date; the row it stages opens
+ * straight into the edit form and is only written once its Save is clicked.
+ * The game and the write-up shown in the popup are always typed by hand.
  */
 export function VideoImportBar({ addRow, busy, niches }: Props) {
   const [url, setUrl] = useState('')
@@ -36,6 +37,10 @@ export function VideoImportBar({ addRow, busy, niches }: Props) {
         thumbnail_url: meta.thumbnailUrl,
         youtube_url: meta.youtubeUrl,
         youtube_id: meta.youtubeId,
+        likes: meta.likes ?? '',
+        duration: meta.duration ?? '',
+        published_at: meta.publishedAt ?? null,
+        channel_url: meta.channelUrl ?? null,
         featured: false,
       })
       setUrl('')
