@@ -110,14 +110,14 @@ function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
               context for the title, not the point of the popup. */}
           <div className={styles.head}>
             <div className={styles.headMain}>
+              <h2 id="video-modal-title" className={styles.title}>
+                {video.title}
+              </h2>
+
               <div className={styles.tags}>
                 {video.niche && <span className={styles.tag}>{video.niche}</span>}
                 {video.game && <span className={`${styles.tag} ${styles.tagGame}`}>{video.game}</span>}
               </div>
-
-              <h2 id="video-modal-title" className={styles.title}>
-                {video.title}
-              </h2>
 
               {video.creator && (
                 <div className={styles.creator}>
