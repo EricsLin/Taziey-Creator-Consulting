@@ -98,8 +98,6 @@ const toVideo = (r: Row): Video => ({
   publishedAt: r.published_at,
   likes: r.likes ?? '',
   channelUrl: r.channel_url,
-  summary: r.summary ?? '',
-  highlights: r.highlights ?? '',
   featured: !!r.featured,
   rotatorColumn: r.rotator_column,
   rotatorPosition: r.rotator_position,

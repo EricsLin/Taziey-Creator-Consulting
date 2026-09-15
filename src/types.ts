@@ -58,10 +58,6 @@ export interface Video {
   /** Pre-formatted, e.g. "182K". */
   likes: string
   channelUrl?: string | null
-  /** Our own write-up of the collaboration. */
-  summary: string
-  /** One bullet per line, as typed in the admin. */
-  highlights: string
   /** Surface on the home page "Videos we helped shape" rotator. */
   featured: boolean
   /** Which rotator column this sits in (1–3), and where within it. */

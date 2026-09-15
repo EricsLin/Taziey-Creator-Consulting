@@ -177,7 +177,7 @@ export function VideosEditor() {
     <CollectionEditor
       table="videos"
       title="Videos"
-      blurb="The full portfolio on /content. Everything below the thumbnail fills the popup that opens when a visitor clicks any thumbnail on the site, so the write-up and highlights are worth filling in. Set a rotator column (1–3) and position to also surface a video in the home page “Videos we helped shape” block; leave the column empty to keep it off the home page."
+      blurb="The full portfolio on /content. Everything below the thumbnail fills the popup that opens when a visitor clicks any thumbnail on the site. Set a rotator column (1–3) and position to also surface a video in the home page “Videos we helped shape” block; leave the column empty to keep it off the home page."
       fields={[
         { name: 'title', label: 'Title', full: true },
         { name: 'creator', label: 'Creator' },
@@ -195,18 +195,6 @@ export function VideosEditor() {
           nullable: true,
           full: true,
           placeholder: 'https://www.youtube.com/@channel',
-        },
-        {
-          name: 'summary',
-          label: 'Write-up',
-          type: 'textarea',
-          hint: 'The paragraph in the popup — what the video was and what we did on it.',
-        },
-        {
-          name: 'highlights',
-          label: 'Highlights',
-          type: 'textarea',
-          hint: 'One bullet per line. Shown as a list under the write-up.',
         },
         { name: 'featured', label: 'Featured', type: 'checkbox' },
         {
@@ -231,8 +219,6 @@ export function VideosEditor() {
         game: '',
         likes: '',
         duration: '',
-        summary: '',
-        highlights: '',
         featured: false,
       })}
       addLabel="Add blank video"

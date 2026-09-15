@@ -118,7 +118,7 @@ export function Hero({ videos }: Props) {
             })}
 
             <div className={styles.portrait} aria-hidden="true">
-              <img className={styles.portraitImg} src="/taziey-bust.png" alt="" />
+              <img className={styles.portraitImg} src="/taziey.png" alt="" />
             </div>
 
             {count > 1 && (

@@ -119,9 +119,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  /* The right pad leaves the corner to Taziey. Being a percentage, it clears
-     him at every frame size without needing a breakpoint. */
-  padding: 0 25% 24px 26px;
+  /* The right pad leaves the corner to Taziey and the disc behind him. Being a
+     percentage, it clears them at every frame size without needing a
+     breakpoint. */
+  padding: 0 28% 24px 26px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -202,31 +203,44 @@
 
 /* ---- portrait ------------------------------------------------------------ */
 
+/* Taziey sits in a medallion rather than standing loose in the shot: a dark
+   disc that clips him, so the frame around him is a circle instead of the
+   cutout's own ragged outline. The disc is what separates him from whatever
+   thumbnail is behind — the earlier version leaned on a teal halo traced round
+   his silhouette, which read as part of the thumbnail rather than on top of it.
+   Clipping is also why this can use `taziey.png`: the full cutout's shoulders
+   run off both sides of the source frame, and the circle crops those straight
+   cuts away long before they show. */
 .portrait {
   position: absolute;
-  right: 2%;
-  bottom: 0;
-  /* Sized against the frame so he stays in proportion to it at any width, and
-     clipped by it so he reads as standing in the shot. */
+  right: 1%;
+  bottom: 2%;
+  /* Sized against the frame so he stays in proportion to it at any width. */
   width: 21%;
+  aspect-ratio: 1;
   z-index: 3;
+  border-radius: 50%;
+  overflow: hidden;
+  /* Behind the cutout's transparency, so the disc reads as a solid ground
+     around his hair rather than letting the thumbnail through. */
+  background: radial-gradient(circle at 50% 32%, #1d2b31, #0b1114 78%);
+  border: 2px solid rgba(53, 224, 241, 0.75);
+  /* A dark halo to hold the rim off a bright thumbnail, a soft teal bloom, and
+     a drop shadow to lift the whole disc off the frame. */
+  box-shadow: 0 0 0 5px rgba(8, 11, 13, 0.32), 0 0 30px rgba(53, 224, 241, 0.28),
+    0 14px 34px rgba(0, 0, 0, 0.5);
   pointer-events: none;
 }
 
-/* Chained shadows, applied to the cutout's alpha so they hug his silhouette
-   rather than boxing the image: a light rim along the top edge, a teal halo
-   and wider bloom, then a soft dark shadow to ground him.
-   This needs `taziey-bust.png`, not `taziey.png` — the full cutout's shoulders
-   run off both sides of the source frame, and the halo traces those straight
-   cuts as two teal bars. The bust crop stops where the silhouette still
-   closes, so there is a real outline to trace. */
+/* The source is a square head-and-shoulders frame with his face in the upper
+   half, so it is scaled past the disc and pushed down: that centres the face
+   in the circle and lets the shoulders fill the bottom, where the arc crops
+   them. Nudged left of centre because the hair sits right of the face. */
 .portraitImg {
-  position: relative;
+  position: absolute;
+  top: 6%;
   width: 100%;
   height: auto;
-  filter: drop-shadow(0 0 12px rgba(53, 224, 241, 0.95))
-    drop-shadow(0 0 32px rgba(53, 224, 241, 0.6))
-    drop-shadow(0 12px 26px rgba(0, 0, 0, 0.6));
 }
 
 /* ---- responsive ---------------------------------------------------------- */
@@ -253,7 +267,7 @@
 
 @media (max-width: 620px) {
   .caption {
-    padding: 0 27% 18px 18px;
+    padding: 0 30% 18px 18px;
     gap: 7px;
   }
   .nav {

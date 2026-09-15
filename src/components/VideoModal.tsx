@@ -37,19 +37,6 @@ export function useVideoModal(): VideoModalState {
   return useContext(VideoModalContext)
 }
 
-/** "2024-07-19" -> "19 July 2024". Returns null for an empty or unparseable date. */
-function formatDate(value?: string | null): string | null {
-  if (!value) return null
-  const date = new Date(`${value.slice(0, 10)}T00:00:00Z`)
-  if (Number.isNaN(date.getTime())) return null
-  return date.toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    timeZone: 'UTC',
-  })
-}
-
 function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
   const closeRef = useRef<HTMLButtonElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
@@ -92,18 +79,12 @@ function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
     }
   }, [onClose])
 
-  const published = formatDate(video.publishedAt)
+  /* Just the two numbers that say how the video did. Runtime is already on the
+     thumbnail above, and the publish date is not what anyone opened this for. */
   const facts: Array<{ label: string; value: string }> = [
     { label: 'Views', value: video.views },
     { label: 'Likes', value: video.likes },
-    { label: 'Runtime', value: video.duration },
-    { label: 'Published', value: published ?? '' },
   ].filter((fact) => fact.value)
-
-  const highlights = video.highlights
-    .split('\n')
-    .map((line) => line.replace(/^[-•*]\s*/, '').trim())
-    .filter(Boolean)
 
   return (
     <div className={styles.backdrop} onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
@@ -125,49 +106,43 @@ function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
         </div>
 
         <div className={styles.body}>
-          <div className={styles.tags}>
-            {video.niche && <span className={styles.tag}>{video.niche}</span>}
-            {video.game && <span className={`${styles.tag} ${styles.tagGame}`}>{video.game}</span>}
-          </div>
+          {/* Title block on the left, the two numbers set in a row beside it —
+              context for the title, not the point of the popup. */}
+          <div className={styles.head}>
+            <div className={styles.headMain}>
+              <div className={styles.tags}>
+                {video.niche && <span className={styles.tag}>{video.niche}</span>}
+                {video.game && <span className={`${styles.tag} ${styles.tagGame}`}>{video.game}</span>}
+              </div>
 
-          <h2 id="video-modal-title" className={styles.title}>
-            {video.title}
-          </h2>
+              <h2 id="video-modal-title" className={styles.title}>
+                {video.title}
+              </h2>
 
-          {video.creator && (
-            <div className={styles.creator}>
-              {video.channelUrl ? (
-                <a className={styles.channel} href={video.channelUrl} target="_blank" rel="noreferrer">
-                  {video.creator}
-                </a>
-              ) : (
-                video.creator
+              {video.creator && (
+                <div className={styles.creator}>
+                  {video.channelUrl ? (
+                    <a className={styles.channel} href={video.channelUrl} target="_blank" rel="noreferrer">
+                      {video.creator}
+                    </a>
+                  ) : (
+                    video.creator
+                  )}
+                </div>
               )}
             </div>
-          )}
 
-          {facts.length > 0 && (
-            <dl className={styles.facts}>
-              {facts.map((fact) => (
-                <div key={fact.label} className={styles.fact}>
-                  <dt className={styles.factLabel}>{fact.label}</dt>
-                  <dd className={styles.factValue}>{fact.value}</dd>
-                </div>
-              ))}
-            </dl>
-          )}
-
-          {video.summary && <p className={styles.summary}>{video.summary}</p>}
-
-          {highlights.length > 0 && (
-            <ul className={styles.highlights}>
-              {highlights.map((line, i) => (
-                <li key={i} className={styles.highlight}>
-                  {line}
-                </li>
-              ))}
-            </ul>
-          )}
+            {facts.length > 0 && (
+              <dl className={styles.facts}>
+                {facts.map((fact) => (
+                  <div key={fact.label} className={styles.fact}>
+                    <dt className={styles.factLabel}>{fact.label}</dt>
+                    <dd className={styles.factValue}>{fact.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </div>
 
           <div className={styles.actions}>
             {video.youtubeUrl && (
