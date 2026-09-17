@@ -3,6 +3,7 @@ import { PageState } from '@/components/PageState'
 import { Skeleton, SkeletonScreen } from '@/components/Skeleton'
 import { SmartLink } from '@/components/SmartLink'
 import { useCopy, useSiteContent } from '@/lib/useSiteContent'
+import { useDocumentTitle } from '@/lib/useDocumentTitle'
 import type { Service, ServiceCategory } from '@/types'
 import styles from './Services.module.css'
 
@@ -190,6 +191,7 @@ function ServicesSkeleton() {
 export function Services() {
   const { content, loading, error } = useSiteContent()
   const copy = useCopy()
+  useDocumentTitle('meta.title.services')
 
   const groups = useMemo(() => {
     if (!content) return []
@@ -209,7 +211,7 @@ export function Services() {
   }, [content])
 
   if (loading) return <ServicesSkeleton />
-  if (error || !content) return <PageState>Couldn&rsquo;t load the services list.</PageState>
+  if (error || !content) return <PageState>{copy('services.error')}</PageState>
 
   return (
     <>
@@ -256,7 +258,7 @@ export function Services() {
               <div className={styles.per}>{copy('services.consult.per')}</div>
             </div>
             <div className={styles.priceNote}>{copy('services.consult.price_note')}</div>
-            <SmartLink to={copy('services.consult.book_href', '/contact')} className={styles.book}>
+            <SmartLink to={copy('services.consult.book_href')} className={styles.book}>
               {copy('services.consult.book_label')}
             </SmartLink>
           </div>

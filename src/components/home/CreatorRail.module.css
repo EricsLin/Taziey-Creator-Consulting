@@ -92,6 +92,7 @@
 .subs {
   font-size: 13.5px;
   color: var(--accent-deep);
+  -webkit-text-stroke: var(--accent-edge);
   font-weight: 500;
   line-height: 1.35;
   margin-top: 4px;

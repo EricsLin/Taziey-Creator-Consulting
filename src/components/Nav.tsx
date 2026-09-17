@@ -3,11 +3,12 @@ import { useCopy } from '@/lib/useSiteContent'
 import { ThemeToggle } from './ThemeToggle'
 import styles from './Nav.module.css'
 
+/** Routes are fixed; only the labels are editable, hence the copy key. */
 const NAV = [
-  { to: '/', label: 'Home' },
-  { to: '/content', label: 'Content' },
-  { to: '/services', label: 'Services' },
-  { to: '/contact', label: 'Contact' },
+  { to: '/', copyKey: 'nav.home' },
+  { to: '/content', copyKey: 'nav.content' },
+  { to: '/services', copyKey: 'nav.services' },
+  { to: '/contact', copyKey: 'nav.contact' },
 ]
 
 export function Nav() {
@@ -18,7 +19,7 @@ export function Nav() {
       <nav className={styles.inner}>
         <Link to="/" className={styles.brand}>
           <img className={styles.mark} src="/icon.png" alt="" width={30} height={30} />
-          <span className={styles.wordmark}>{copy('brand.wordmark', 'Taziey')}</span>
+          <span className={styles.wordmark}>{copy('brand.wordmark')}</span>
         </Link>
         <div className={styles.links}>
           {NAV.map((item) => (
@@ -30,7 +31,7 @@ export function Nav() {
                 isActive ? `${styles.link} ${styles['link--active']}` : styles.link
               }
             >
-              {item.label}
+              {copy(item.copyKey)}
             </NavLink>
           ))}
           <ThemeToggle />

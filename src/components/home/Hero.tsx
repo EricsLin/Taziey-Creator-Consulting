@@ -31,13 +31,12 @@ export function Hero({ videos }: Props) {
   const { open } = useVideoModal()
   const count = videos.length
   const [index, setIndex] = useState(0)
-  const [paused, setPaused] = useState(false)
   const dragFrom = useRef<number | null>(null)
   const swiped = useRef(false)
 
   const go = useCallback((delta: number) => setIndex((i) => (i + delta + count) % count), [count])
 
-  useInterval(() => go(1), count > 1 && !paused ? DWELL_MS : null)
+  useInterval(() => go(1), count > 1 ? DWELL_MS : null)
 
   /* Horizontal drag advances the carousel; the trailing click is swallowed so
      a swipe doesn't also open the popup for the video the finger started on. */
@@ -63,19 +62,17 @@ export function Hero({ videos }: Props) {
   if (count === 0) return null
 
   return (
-    <section
-      className={styles.hero}
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
-    >
+    <section className={styles.hero}>
       <div className={styles.glow} aria-hidden="true" />
 
       <div className={styles.shell}>
         <div className={styles.grid}>
           <div className={styles.slogan}>
-            <div className={`eyebrow ${styles.eyebrow}`}>{copy('home.recent.eyebrow')}</div>
+            {/* Taziey introduces the slogan rather than standing in the carousel
+                corner: at the top of the column he reads as the person saying it. */}
+            <div className={styles.portrait} aria-hidden="true">
+              <img className={styles.portraitImg} src="/taziey.png" alt="" />
+            </div>
             <h1 className={styles.title}>
               {copy('home.hero.title_before')}
               <span className={styles.accent}>{copy('home.hero.title_accent')}</span>
@@ -83,8 +80,8 @@ export function Hero({ videos }: Props) {
             </h1>
           </div>
 
-          {/* Everything the carousel needs lives inside the frame: the caption,
-              the controls, and Taziey standing in the corner. */}
+          {/* Everything the carousel needs lives inside the frame: the caption
+              and the controls. */}
           <div
             className={styles.deck}
             onPointerDown={onPointerDown}
@@ -106,20 +103,21 @@ export function Hero({ videos }: Props) {
                   tabIndex={isActive ? undefined : -1}
                   aria-hidden={!isActive}
                 >
-                  <ImageSlot src={video.thumbnailUrl} placeholder="thumbnail" />
+                  <ImageSlot
+                    src={video.thumbnailUrl}
+                    placeholder={copy('video.thumbnail_placeholder')}
+                  />
                   <span className={styles.scrim} aria-hidden="true" />
                   <span className={styles.caption}>
-                    <span className={styles.views}>{video.views} views</span>
+                    <span className={styles.views}>
+                      {video.views} {copy('video.views_suffix')}
+                    </span>
                     <span className={styles.slideTitle}>{video.title}</span>
                     <span className={styles.slideMeta}>{video.creator}</span>
                   </span>
                 </button>
               )
             })}
-
-            <div className={styles.portrait} aria-hidden="true">
-              <img className={styles.portraitImg} src="/taziey.png" alt="" />
-            </div>
 
             {count > 1 && (
               <div className={styles.nav}>
@@ -131,7 +129,7 @@ export function Hero({ videos }: Props) {
                   type="button"
                   className={styles.arrow}
                   onClick={() => go(-1)}
-                  aria-label="Previous video"
+                  aria-label={copy('home.hero.prev_label')}
                 >
                   &#8249;
                 </button>
@@ -139,7 +137,7 @@ export function Hero({ videos }: Props) {
                   type="button"
                   className={styles.arrow}
                   onClick={() => go(1)}
-                  aria-label="Next video"
+                  aria-label={copy('home.hero.next_label')}
                 >
                   &#8250;
                 </button>

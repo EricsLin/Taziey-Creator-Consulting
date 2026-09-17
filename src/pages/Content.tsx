@@ -3,7 +3,9 @@ import { ImageSlot } from '@/components/ImageSlot'
 import { PageState } from '@/components/PageState'
 import { useVideoModal } from '@/components/VideoModal'
 import { Skeleton, SkeletonScreen } from '@/components/Skeleton'
+import { fillCopy } from '@/lib/copyKeys'
 import { useCopy, useSiteContent } from '@/lib/useSiteContent'
+import { useDocumentTitle } from '@/lib/useDocumentTitle'
 import styles from './Content.module.css'
 
 /** Placeholder shaped like the real page — same widths, same grid. */
@@ -47,6 +49,7 @@ function ContentSkeleton() {
 export function Content() {
   const { content, loading, error } = useSiteContent()
   const copy = useCopy()
+  useDocumentTitle('meta.title.content')
   const { open } = useVideoModal()
   const [filter, setFilter] = useState<string | null>(null)
 
@@ -57,9 +60,9 @@ export function Content() {
   }, [content])
 
   if (loading) return <ContentSkeleton />
-  if (error || !content) return <PageState>Couldn&rsquo;t load the portfolio.</PageState>
+  if (error || !content) return <PageState>{copy('content.error')}</PageState>
 
-  const allLabel = copy('content.filter_all_label', 'All')
+  const allLabel = copy('content.filter_all_label')
   // `null` is the All tab, so a niche can be renamed to anything without
   // colliding with the tab that means "no filter".
   const tabs: Array<{ key: string; label: string; niche: string | null }> = [
@@ -76,7 +79,7 @@ export function Content() {
         <p className={styles.lede}>{copy('content.lede')}</p>
       </section>
 
-      <div className={styles.filters} role="group" aria-label="Filter portfolio by niche">
+      <div className={styles.filters} role="group" aria-label={copy('content.filter_label')}>
         {tabs.map((tab) => {
           const active = tab.niche === filter
           return (
@@ -108,10 +111,14 @@ export function Content() {
                 type="button"
                 className={styles.cardButton}
                 onClick={() => open(video)}
-                aria-label={`${video.title} — view details`}
+                aria-label={fillCopy(copy('video.details_label'), { title: video.title })}
               >
                 <div className={styles.thumb}>
-                  <ImageSlot src={video.thumbnailUrl} alt={video.title} placeholder={video.niche} />
+                  <ImageSlot
+                    src={video.thumbnailUrl}
+                    alt={video.title}
+                    placeholder={video.niche || copy('video.thumbnail_placeholder')}
+                  />
                 </div>
                 <div className={styles.body}>
                   <div className={styles.niche}>{video.niche.toUpperCase()}</div>
@@ -119,7 +126,9 @@ export function Content() {
                   <div className={styles.meta}>
                     <span>{video.creator}</span>
                     <span className={styles.sep}>&bull;</span>
-                    <span>{video.views} views</span>
+                    <span>
+                      {video.views} {copy('video.views_suffix')}
+                    </span>
                   </div>
                 </div>
               </button>

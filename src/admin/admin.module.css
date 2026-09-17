@@ -439,8 +439,24 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-deep);
+  -webkit-text-stroke: var(--accent-edge);
   font-weight: 600;
   margin-bottom: 10px;
+}
+
+.copyLabel {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* Reset-to-default, sitting in the hint line under a changed field. */
+.linkBtn {
+  font: inherit;
+  font-size: 12px;
+  color: var(--accent-deep);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .copyGrid {

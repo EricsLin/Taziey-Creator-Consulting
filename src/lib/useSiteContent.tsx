@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import type { SiteContent } from '@/types'
 import { fetchSiteContent } from './content'
+import { COPY_DEFAULTS } from './copyKeys'
 
 interface State {
   content: SiteContent | null
@@ -54,13 +55,19 @@ export function useSiteContent(): State {
 }
 
 /**
- * Reader for `site_copy`. Returns the fallback while content is still loading
- * or when a key hasn't been seeded, so the shell never renders blank strings.
+ * Reader for `site_copy`. A key that has a row uses it, blank included — an
+ * admin who clears a field means to clear it. Everything else falls back to the
+ * default in `copyKeys.ts`, which covers both the keys nobody has edited yet
+ * and the first paint before the fetch lands, so the site never flashes blank.
  */
 export function useCopy(): (key: string, fallback?: string) => string {
   const { content } = useSiteContent()
   return useCallback(
-    (key: string, fallback = '') => content?.copy[key] || fallback,
+    (key: string, fallback?: string) => {
+      const stored = content?.copy[key]
+      if (stored !== undefined) return stored
+      return fallback ?? COPY_DEFAULTS[key] ?? ''
+    },
     [content],
   )
 }

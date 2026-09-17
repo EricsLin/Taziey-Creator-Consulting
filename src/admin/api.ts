@@ -44,6 +44,39 @@ export async function persistOrder(table: TableName, ids: string[]): Promise<voi
   if (failed?.error) throw new Error(failed.error.message)
 }
 
+/* ---- site_copy -------------------------------------------------------------
+ * Keyed by `key`, not `id`, and every column but the value is presentation
+ * metadata mirrored from `src/lib/copyKeys.ts` — so it gets its own pair of
+ * calls rather than going through the generic row helpers above.
+ */
+
+/** Saved copy values as `key → value`. Keys with no row have never been edited. */
+export async function listCopy(): Promise<Record<string, string>> {
+  const { data, error } = await supabase.from('site_copy').select('key, value')
+  if (error) throw new Error(error.message)
+  return Object.fromEntries((data ?? []).map((row) => [row.key as string, (row.value ?? '') as string]))
+}
+
+export interface CopyUpsert {
+  key: string
+  value: string
+  section: string
+  label: string
+  multiline: boolean
+  sort_order: number
+}
+
+/**
+ * Writes the edited keys. An upsert rather than an update because most keys
+ * have no row until the first time someone changes them; the metadata columns
+ * ride along so the table stays readable in the Supabase dashboard.
+ */
+export async function saveCopy(rows: CopyUpsert[]): Promise<void> {
+  if (rows.length === 0) return
+  const { error } = await supabase.from('site_copy').upsert(rows, { onConflict: 'key' })
+  if (error) throw new Error(error.message)
+}
+
 export interface VideoMeta {
   source: 'youtube-data-api' | 'oembed'
   youtubeId: string

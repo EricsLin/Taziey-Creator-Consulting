@@ -2,6 +2,7 @@ import { ChannelIcon } from '@/components/ChannelIcon'
 import { ContactForm } from '@/components/ContactForm'
 import { channelOfKind } from '@/lib/content'
 import { useCopy, useSiteContent } from '@/lib/useSiteContent'
+import { useDocumentTitle } from '@/lib/useDocumentTitle'
 import type { ContactChannel } from '@/types'
 import styles from './Contact.module.css'
 
@@ -50,6 +51,7 @@ export function Contact() {
   // rather than sitting behind a loading state.
   const { content } = useSiteContent()
   const copy = useCopy()
+  useDocumentTitle('meta.title.contact')
   const channels = content?.contact ?? []
   const email = channelOfKind(channels, 'email')
   const secondary = channels.filter((channel) => channel.kind !== 'email')

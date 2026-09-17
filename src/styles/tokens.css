@@ -23,6 +23,12 @@
   /* Deliberately the same as --accent: the darkened teal was dropped in favour of the original. */
   --accent-deep: var(--accent);
   --accent-soft: #d6f8fc;
+  /* A crisp hairline around accent-coloured text — the teal is bright enough on
+     the light page that glyph edges shimmer. Fed to -webkit-text-stroke (width
+     + colour), so it is a hard edge with no blur; the global `paint-order` in
+     global.css keeps the stroke behind the fill so glyphs don't thicken.
+     Zero-width in dark mode, where the teal already sits on ink. */
+  --accent-edge: 0.4px rgba(17, 20, 23, 0.85);
 
   /* lines */
   --line: rgba(17, 20, 23, 0.09);
@@ -140,6 +146,7 @@
 
   /* brand — the teal has enough lift to stay as-is; only its wash goes deep */
   --accent-soft: #0d3b42;
+  --accent-edge: 0 transparent;
 
   /* lines — light hairlines on a dark ground */
   --line: rgba(255, 255, 255, 0.09);

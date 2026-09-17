@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom'
 import { useAuth } from '@/lib/auth'
+import { useDocumentTitle } from '@/lib/useDocumentTitle'
 import { Login } from './Login'
 import styles from './admin.module.css'
 
@@ -28,6 +29,10 @@ const SECTIONS: Array<{ label: string; links: Array<{ to: string; label: string 
     label: 'Reach',
     links: [{ to: '/admin/contact', label: 'Contact links' }],
   },
+  {
+    label: 'Wording',
+    links: [{ to: '/admin/copy', label: 'Site copy' }],
+  },
 ]
 
 /**
@@ -37,6 +42,7 @@ const SECTIONS: Array<{ label: string; links: Array<{ to: string; label: string 
  */
 export function AdminLayout() {
   const { session, isAdmin, loading, signOut } = useAuth()
+  useDocumentTitle('meta.title.admin')
 
   if (loading) return <div className={styles.login}>Checking your session…</div>
   if (!session) return <Login />

@@ -131,6 +131,7 @@
 .chev {
   font-size: 24px;
   color: var(--accent-deep);
+  -webkit-text-stroke: var(--accent-edge);
   flex-shrink: 0;
 }
 

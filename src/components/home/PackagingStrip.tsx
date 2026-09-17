@@ -3,6 +3,7 @@ import type { PackagingFlip, Video } from '@/types'
 import { ImageSlot } from '@/components/ImageSlot'
 import { useVideoModal } from '@/components/VideoModal'
 import { useInterval } from '@/lib/useInterval'
+import { fillCopy } from '@/lib/copyKeys'
 import { useCopy } from '@/lib/useSiteContent'
 import styles from './PackagingStrip.module.css'
 
@@ -53,7 +54,7 @@ export function PackagingStrip({ flips, videos }: Props) {
               >
                 <ImageSlot
                   src={flip.beforeUrl}
-                  placeholder={copy('home.packaging.placeholder_before', 'before')}
+                  placeholder={copy('home.packaging.placeholder_before')}
                 />
               </div>
               <div
@@ -65,7 +66,7 @@ export function PackagingStrip({ flips, videos }: Props) {
               >
                 <ImageSlot
                   src={flip.afterUrl}
-                  placeholder={copy('home.packaging.placeholder_after', 'after')}
+                  placeholder={copy('home.packaging.placeholder_after')}
                 />
               </div>
               <div
@@ -81,8 +82,8 @@ export function PackagingStrip({ flips, videos }: Props) {
                 }}
               >
                 {revealed
-                  ? copy('home.packaging.label_after', 'AFTER')
-                  : copy('home.packaging.label_before', 'BEFORE')}
+                  ? copy('home.packaging.label_after')
+                  : copy('home.packaging.label_before')}
               </div>
               <div
                 className={styles.lift}
@@ -112,7 +113,7 @@ export function PackagingStrip({ flips, videos }: Props) {
                   type="button"
                   className={styles.frameButton}
                   onClick={() => open(video)}
-                  aria-label={`${flip.title} — view details`}
+                  aria-label={fillCopy(copy('video.details_label'), { title: flip.title })}
                 >
                   {frame}
                 </button>

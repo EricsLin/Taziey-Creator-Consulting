@@ -4,6 +4,9 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  /* Only bites where a -webkit-text-stroke is set (see --accent-edge): without
+     it the stroke is painted over the glyph and eats into the letterform. */
+  paint-order: stroke fill;
 }
 
 html,
@@ -77,6 +80,7 @@ img {
   font-size: 13px;
   letter-spacing: 0.14em;
   color: var(--accent-deep);
+  -webkit-text-stroke: var(--accent-edge);
   font-weight: 600;
 }
 

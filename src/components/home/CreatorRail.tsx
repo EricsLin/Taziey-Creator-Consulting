@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { Creator } from '@/types'
 import { ImageSlot } from '@/components/ImageSlot'
 import { useInterval } from '@/lib/useInterval'
+import { fillCopy } from '@/lib/copyKeys'
 import { useCopy } from '@/lib/useSiteContent'
 import styles from './CreatorRail.module.css'
 
@@ -38,7 +39,10 @@ export function CreatorRail({ creators }: Props) {
               <button
                 key={i}
                 type="button"
-                aria-label={`Show creators ${i * PER_PAGE + 1}–${i * PER_PAGE + PER_PAGE}`}
+                aria-label={fillCopy(copy('home.creators.page_label'), {
+                  from: i * PER_PAGE + 1,
+                  to: i * PER_PAGE + PER_PAGE,
+                })}
                 aria-current={i === active}
                 onClick={() => setPage(i)}
                 className={`${styles.dot} ${i === active ? styles['dot--active'] : ''}`}
@@ -70,12 +74,14 @@ export function CreatorRail({ creators }: Props) {
                       <ImageSlot
                         src={creator.avatarUrl}
                         alt={creator.name}
-                        placeholder="pfp"
+                        placeholder={copy('home.creators.avatar_placeholder')}
                         shape="circle"
                       />
                     </div>
                     <div className={styles.name}>{creator.name}</div>
-                    <div className={styles.subs}>{creator.subscribers} subs</div>
+                    <div className={styles.subs}>
+                      {creator.subscribers} {copy('home.creators.subs_suffix')}
+                    </div>
                   </div>
                 ))}
               </div>

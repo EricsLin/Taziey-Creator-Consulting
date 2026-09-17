@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import type { Video } from '@/types'
 import { ImageSlot } from '@/components/ImageSlot'
+import { useCopy } from '@/lib/useSiteContent'
 import styles from './VideoModal.module.css'
 
 interface VideoModalState {
@@ -38,6 +39,7 @@ export function useVideoModal(): VideoModalState {
 }
 
 function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
+  const copy = useCopy()
   const closeRef = useRef<HTMLButtonElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
 
@@ -82,8 +84,8 @@ function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
   /* Just the two numbers that say how the video did. Runtime is already on the
      thumbnail above, and the publish date is not what anyone opened this for. */
   const facts: Array<{ label: string; value: string }> = [
-    { label: 'Views', value: video.views },
-    { label: 'Likes', value: video.likes },
+    { label: copy('video.views_label'), value: video.views },
+    { label: copy('video.likes_label'), value: video.likes },
   ].filter((fact) => fact.value)
 
   return (
@@ -95,12 +97,22 @@ function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
         aria-modal="true"
         aria-labelledby="video-modal-title"
       >
-        <button ref={closeRef} type="button" className={styles.close} onClick={onClose} aria-label="Close">
+        <button
+          ref={closeRef}
+          type="button"
+          className={styles.close}
+          onClick={onClose}
+          aria-label={copy('video.close_label')}
+        >
           &#10005;
         </button>
 
         <div className={styles.banner}>
-          <ImageSlot src={video.thumbnailUrl} alt={video.title} placeholder={video.niche || 'thumbnail'} />
+          <ImageSlot
+            src={video.thumbnailUrl}
+            alt={video.title}
+            placeholder={video.niche || copy('video.thumbnail_placeholder')}
+          />
           <span className={styles.scrim} aria-hidden="true" />
           {video.duration && <span className={styles.duration}>{video.duration}</span>}
         </div>
@@ -147,14 +159,14 @@ function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
           <div className={styles.actions}>
             {video.youtubeUrl && (
               <a className={styles.watch} href={video.youtubeUrl} target="_blank" rel="noreferrer">
-                Watch the video
+                {copy('video.watch_label')}
                 <span className={styles.watchArrow} aria-hidden="true">
                   &#8594;
                 </span>
               </a>
             )}
             <button type="button" className={styles.dismiss} onClick={onClose}>
-              Close
+              {copy('video.close_label')}
             </button>
           </div>
         </div>

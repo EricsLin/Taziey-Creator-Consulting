@@ -107,6 +107,7 @@
   font-size: 12px;
   letter-spacing: 0.1em;
   color: var(--accent-deep);
+  -webkit-text-stroke: var(--accent-edge);
   font-weight: 600;
   margin-bottom: 9px;
 }

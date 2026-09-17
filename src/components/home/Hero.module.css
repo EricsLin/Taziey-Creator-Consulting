@@ -1,6 +1,6 @@
-/* The work is the hero. A simple slogan sits to the left; the frame on the
-   right carries the carousel, its caption, its controls, and Taziey standing
-   inside the bottom-right corner. */
+/* The work is the hero. A simple slogan sits to the left, under Taziey's
+   medallion; the frame on the right carries the carousel, its caption and its
+   controls. */
 .hero {
   position: relative;
   padding: 64px 0 76px;
@@ -38,10 +38,6 @@
   min-width: 0;
 }
 
-.eyebrow {
-  margin-bottom: 16px;
-}
-
 .title {
   font-weight: 800;
   font-size: clamp(34px, 3.4vw, 48px);
@@ -53,6 +49,7 @@
 
 .accent {
   color: var(--accent-deep);
+  -webkit-text-stroke: var(--accent-edge);
 }
 
 /* ---- frame --------------------------------------------------------------- */
@@ -119,10 +116,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  /* The right pad leaves the corner to Taziey and the disc behind him. Being a
-     percentage, it clears them at every frame size without needing a
-     breakpoint. */
-  padding: 0 28% 24px 26px;
+  padding: 0 26px 24px 26px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -203,44 +197,41 @@
 
 /* ---- portrait ------------------------------------------------------------ */
 
-/* Taziey sits in a medallion rather than standing loose in the shot: a dark
-   disc that clips him, so the frame around him is a circle instead of the
-   cutout's own ragged outline. The disc is what separates him from whatever
-   thumbnail is behind — the earlier version leaned on a teal halo traced round
-   his silhouette, which read as part of the thumbnail rather than on top of it.
-   Clipping is also why this can use `taziey.png`: the full cutout's shoulders
-   run off both sides of the source frame, and the circle crops those straight
-   cuts away long before they show. */
+/* Taziey sits in a medallion rather than standing loose: a dark disc that clips
+   him, so the frame around him is a circle instead of the cutout's own ragged
+   outline. Clipping is also why this can use `taziey.png`: the full cutout's
+   shoulders run off both sides of the source frame, and the circle crops those
+   straight cuts away long before they show. */
 .portrait {
-  position: absolute;
-  right: 1%;
-  bottom: 2%;
-  /* Sized against the frame so he stays in proportion to it at any width. */
-  width: 21%;
+  position: relative;
+  width: clamp(112px, 10.5vw, 154px);
   aspect-ratio: 1;
-  z-index: 3;
+  /* Centred over the slogan: he introduces it, so he sits above its middle
+     rather than hanging off the start of the first line. */
+  margin: 0 auto 22px;
   border-radius: 50%;
   overflow: hidden;
   /* Behind the cutout's transparency, so the disc reads as a solid ground
-     around his hair rather than letting the thumbnail through. */
+     around his hair rather than letting the page through. */
   background: radial-gradient(circle at 50% 32%, #1d2b31, #0b1114 78%);
   border: 2px solid rgba(53, 224, 241, 0.75);
-  /* A dark halo to hold the rim off a bright thumbnail, a soft teal bloom, and
-     a drop shadow to lift the whole disc off the frame. */
-  box-shadow: 0 0 0 5px rgba(8, 11, 13, 0.32), 0 0 30px rgba(53, 224, 241, 0.28),
-    0 14px 34px rgba(0, 0, 0, 0.5);
+  /* Just the teal bloom and a soft lift. The dark spread ring that used to hold
+     the rim off a bright thumbnail reads as a grey band now that the disc sits
+     on the page ground, so it is gone. */
+  box-shadow: 0 0 26px rgba(53, 224, 241, 0.26), 0 10px 24px -12px rgba(0, 0, 0, 0.45);
   pointer-events: none;
 }
 
 /* The source is a square head-and-shoulders frame with his face in the upper
    half, so it is scaled past the disc and pushed down: that centres the face
    in the circle and lets the shoulders fill the bottom, where the arc crops
-   them. Nudged left of centre because the hair sits right of the face. */
+   them. Mirrored so he faces right, into the page rather than off its edge. */
 .portraitImg {
   position: absolute;
   top: 6%;
   width: 100%;
   height: auto;
+  transform: scaleX(-1);
 }
 
 /* ---- responsive ---------------------------------------------------------- */
@@ -267,7 +258,7 @@
 
 @media (max-width: 620px) {
   .caption {
-    padding: 0 30% 18px 18px;
+    padding: 0 18px 18px;
     gap: 7px;
   }
   .nav {

@@ -142,6 +142,7 @@
 }
 .pillOpen .pillNum {
   color: var(--accent-deep);
+  -webkit-text-stroke: var(--accent-edge);
 }
 
 .pillName {
@@ -305,6 +306,7 @@
 
 .arrow {
   color: var(--accent-deep);
+  -webkit-text-stroke: var(--accent-edge);
 }
 
 .priceCol {

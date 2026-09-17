@@ -7,15 +7,18 @@ import { HomeSkeleton } from '@/components/home/HomeSkeleton'
 import { PackagingStrip } from '@/components/home/PackagingStrip'
 import { StatsRow } from '@/components/home/StatsRow'
 import { heroSlides } from '@/lib/content'
-import { useSiteContent } from '@/lib/useSiteContent'
+import { useCopy, useSiteContent } from '@/lib/useSiteContent'
+import { useDocumentTitle } from '@/lib/useDocumentTitle'
 
 export function Home() {
   const { content, loading, error } = useSiteContent()
+  const copy = useCopy()
+  useDocumentTitle('meta.title.home')
 
   const slides = useMemo(() => (content ? heroSlides(content.videos) : []), [content])
 
   if (loading) return <HomeSkeleton />
-  if (error || !content) return <PageState>Couldn&rsquo;t load the page content.</PageState>
+  if (error || !content) return <PageState>{copy('home.error')}</PageState>
 
   return (
     <>

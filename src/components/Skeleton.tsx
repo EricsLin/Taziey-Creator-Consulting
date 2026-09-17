@@ -1,3 +1,4 @@
+import { useCopy } from '@/lib/useSiteContent'
 import styles from './Skeleton.module.css'
 
 interface SkeletonProps {
@@ -24,8 +25,9 @@ export function Skeleton({ w = '100%', h = 14, radius, className = '' }: Skeleto
  * keeps screen readers hearing "Loading" once instead of per block.
  */
 export function SkeletonScreen({ children }: { children: React.ReactNode }) {
+  const copy = useCopy()
   return (
-    <div role="status" aria-busy="true" aria-label="Loading" className={styles.screen}>
+    <div role="status" aria-busy="true" aria-label={copy('loading.label')} className={styles.screen}>
       {children}
     </div>
   )

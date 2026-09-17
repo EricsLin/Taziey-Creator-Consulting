@@ -1,10 +1,15 @@
 import { Link } from 'react-router-dom'
+import { useCopy } from '@/lib/useSiteContent'
+import { useDocumentTitle } from '@/lib/useDocumentTitle'
 
 export function NotFound() {
+  const copy = useCopy()
+  useDocumentTitle('meta.title.not_found')
+
   return (
     <section className="shell" style={{ paddingBlock: '140px 160px' }}>
       <div className="eyebrow" style={{ marginBottom: 14 }}>
-        404
+        {copy('not_found.eyebrow')}
       </div>
       <h1
         style={{
@@ -15,13 +20,13 @@ export function NotFound() {
           margin: '0 0 20px',
         }}
       >
-        Nothing here.
+        {copy('not_found.title')}
       </h1>
       <p style={{ color: 'var(--ink-3)', fontSize: 18, maxWidth: '46ch', margin: '0 0 32px' }}>
-        That page doesn&rsquo;t exist &mdash; or it hasn&rsquo;t been built yet.
+        {copy('not_found.text')}
       </p>
       <Link to="/" className="btn btn--primary">
-        Back home
+        {copy('not_found.link_label')}
       </Link>
     </section>
   )

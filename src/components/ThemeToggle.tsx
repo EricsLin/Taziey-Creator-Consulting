@@ -1,3 +1,4 @@
+import { useCopy } from '@/lib/useSiteContent'
 import { useTheme } from '@/lib/useTheme'
 import styles from './ThemeToggle.module.css'
 
@@ -22,7 +23,8 @@ function MoonIcon() {
 
 export function ThemeToggle() {
   const { theme, toggle } = useTheme()
-  const next = theme === 'dark' ? 'light' : 'dark'
+  const copy = useCopy()
+  const label = copy(theme === 'dark' ? 'nav.theme_to_light' : 'nav.theme_to_dark')
 
   return (
     <button
@@ -31,8 +33,8 @@ export function ThemeToggle() {
       onClick={toggle}
       /* The button is an icon only, so it needs its own label; `title` gives
          sighted users the same hint on hover. */
-      aria-label={`Switch to ${next} mode`}
-      title={`Switch to ${next} mode`}
+      aria-label={label}
+      title={label}
     >
       <span className={styles.icons} data-theme-state={theme}>
         <span className={`${styles.icon} ${styles['icon--sun']}`}>

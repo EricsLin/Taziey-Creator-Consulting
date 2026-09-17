@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useCopy } from '@/lib/useSiteContent'
 import styles from './ContactForm.module.css'
 
 export interface ContactEnquiry {
@@ -28,6 +29,7 @@ interface Props {
  * no-op pending the Supabase edge function.
  */
 export function ContactForm({ niches = [] }: Props) {
+  const copy = useCopy()
   const [values, setValues] = useState<ContactEnquiry>(EMPTY)
 
   const set = (key: keyof ContactEnquiry) => (
@@ -41,16 +43,14 @@ export function ContactForm({ niches = [] }: Props) {
 
   return (
     <div className={styles.card}>
-      <h2 className={styles.title}>Tell us about your channel</h2>
-      <p className={styles.blurb}>
-        The more you give us up front, the more useful our first reply will be.
-      </p>
+      <h2 className={styles.title}>{copy('contact.form.title')}</h2>
+      <p className={styles.blurb}>{copy('contact.form.blurb')}</p>
 
       <form className={styles.form} onSubmit={handleSubmit} noValidate={false}>
         <div className={styles.pair}>
           <div className={styles.field}>
             <label className={styles.label} htmlFor="cf-name">
-              Name
+              {copy('contact.form.name_label')}
             </label>
             <input
               id="cf-name"
@@ -58,7 +58,7 @@ export function ContactForm({ niches = [] }: Props) {
               type="text"
               name="name"
               autoComplete="name"
-              placeholder="Ryley"
+              placeholder={copy('contact.form.name_placeholder')}
               required
               value={values.name}
               onChange={set('name')}
@@ -66,7 +66,7 @@ export function ContactForm({ niches = [] }: Props) {
           </div>
           <div className={styles.field}>
             <label className={styles.label} htmlFor="cf-email">
-              Email
+              {copy('contact.form.email_label')}
             </label>
             <input
               id="cf-email"
@@ -74,7 +74,7 @@ export function ContactForm({ niches = [] }: Props) {
               type="email"
               name="email"
               autoComplete="email"
-              placeholder="you@channel.com"
+              placeholder={copy('contact.form.email_placeholder')}
               required
               value={values.email}
               onChange={set('email')}
@@ -84,7 +84,7 @@ export function ContactForm({ niches = [] }: Props) {
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="cf-channel">
-            Channel link
+            {copy('contact.form.channel_label')}
           </label>
           <input
             id="cf-channel"
@@ -92,7 +92,7 @@ export function ContactForm({ niches = [] }: Props) {
             type="url"
             name="channelUrl"
             inputMode="url"
-            placeholder="youtube.com/@yourchannel"
+            placeholder={copy('contact.form.channel_placeholder')}
             required
             value={values.channelUrl}
             onChange={set('channelUrl')}
@@ -101,7 +101,8 @@ export function ContactForm({ niches = [] }: Props) {
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="cf-niche">
-            Niche <span className={styles.optional}>(optional)</span>
+            {copy('contact.form.niche_label')}{' '}
+            <span className={styles.optional}>{copy('contact.form.niche_optional')}</span>
           </label>
           <select
             id="cf-niche"
@@ -110,25 +111,25 @@ export function ContactForm({ niches = [] }: Props) {
             value={values.niche}
             onChange={set('niche')}
           >
-            <option value="">Pick the closest one</option>
+            <option value="">{copy('contact.form.niche_placeholder')}</option>
             {niches.map((niche) => (
               <option key={niche} value={niche}>
                 {niche}
               </option>
             ))}
-            <option value="Other">Something else</option>
+            <option value="Other">{copy('contact.form.niche_other')}</option>
           </select>
         </div>
 
         <div className={styles.field}>
           <label className={styles.label} htmlFor="cf-message">
-            What&rsquo;s frustrating you right now?
+            {copy('contact.form.message_label')}
           </label>
           <textarea
             id="cf-message"
             className={styles.textarea}
             name="message"
-            placeholder="Views are flat, the last four thumbnails flopped, no idea what to make next&hellip;"
+            placeholder={copy('contact.form.message_placeholder')}
             required
             value={values.message}
             onChange={set('message')}
@@ -137,9 +138,9 @@ export function ContactForm({ niches = [] }: Props) {
 
         <div className={styles.submitRow}>
           <button type="submit" className={styles.submit}>
-            Send it over
+            {copy('contact.form.submit_label')}
           </button>
-          <span className={styles.reply}>We reply to everything, usually same day.</span>
+          <span className={styles.reply}>{copy('contact.form.reply_note')}</span>
         </div>
       </form>
     </div>
