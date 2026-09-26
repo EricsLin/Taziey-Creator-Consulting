@@ -44,5 +44,4 @@
 }
 .links a:hover {
   color: var(--accent-deep);
-  -webkit-text-stroke: var(--accent-edge);
 }

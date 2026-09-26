@@ -65,9 +65,9 @@ export function Content() {
   const allLabel = copy('content.filter_all_label')
   // `null` is the All tab, so a niche can be renamed to anything without
   // colliding with the tab that means "no filter".
-  const tabs: Array<{ key: string; label: string; niche: string | null }> = [
+  const tabs: Array<{ key: string; label: string; niche: string | null; iconUrl?: string | null }> = [
     { key: '__all__', label: allLabel, niche: null },
-    ...content.niches.map((niche) => ({ key: niche, label: niche, niche })),
+    ...content.niches.map((n) => ({ key: n.name, label: n.name, niche: n.name, iconUrl: n.iconUrl })),
   ]
   const visible = content.videos.filter((v) => filter === null || v.niche === filter)
 
@@ -90,7 +90,10 @@ export function Content() {
               onClick={() => setFilter(tab.niche)}
               className={`${styles.filter} ${active ? styles['filter--active'] : ''}`}
             >
-              {tab.label}{' '}
+              {tab.iconUrl && (
+                <img className={styles.filterIcon} src={tab.iconUrl} alt="" referrerPolicy="no-referrer" />
+              )}
+              {tab.label}
               <span className={styles.count}>
                 {tab.niche === null ? content.videos.length : counts.get(tab.niche) ?? 0}
               </span>

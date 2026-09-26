@@ -4,14 +4,10 @@ import styles from './HomeSkeleton.module.css'
 export function HomeSkeleton() {
   return (
     <SkeletonScreen>
-      {/* Mirrors the hero: slogan left, one big frame right. */}
+      {/* Mirrors the hero: portrait left, one big frame right. */}
       <section className={styles.hero}>
         <div className={styles.grid}>
-          <div className={styles.slogan}>
-            <Skeleton w={110} h={13} className={styles.eyebrow} />
-            <Skeleton w="90%" h={44} />
-            <Skeleton w="70%" h={44} />
-          </div>
+          <Skeleton w="100%" h="auto" radius="50%" className={styles.portrait} />
           <Skeleton w="100%" h="auto" radius="var(--r-lg)" className={styles.frame} />
         </div>
       </section>

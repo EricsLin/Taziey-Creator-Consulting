@@ -130,6 +130,9 @@
 }
 
 .tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 4px 10px;
   font-size: 11.5px;
   font-weight: 600;
@@ -138,6 +141,13 @@
   color: var(--ink-4);
   border: 1px solid var(--line-3);
   border-radius: var(--r-pill);
+}
+
+.tagIcon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  object-fit: contain;
 }
 
 .tagGame {

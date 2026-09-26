@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import type { Video } from '@/types'
 import { ImageSlot } from '@/components/ImageSlot'
-import { useCopy } from '@/lib/useSiteContent'
+import { useCopy, useSiteContent } from '@/lib/useSiteContent'
 import styles from './VideoModal.module.css'
 
 interface VideoModalState {
@@ -40,6 +40,8 @@ export function useVideoModal(): VideoModalState {
 
 function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
   const copy = useCopy()
+  const { content } = useSiteContent()
+  const nicheIcon = content?.niches.find((n) => n.name === video.niche)?.iconUrl
   const closeRef = useRef<HTMLButtonElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
 
@@ -127,7 +129,14 @@ function VideoModal({ video, onClose }: { video: Video; onClose: () => void }) {
               </h2>
 
               <div className={styles.tags}>
-                {video.niche && <span className={styles.tag}>{video.niche}</span>}
+                {video.niche && (
+                  <span className={styles.tag}>
+                    {nicheIcon && (
+                      <img className={styles.tagIcon} src={nicheIcon} alt="" referrerPolicy="no-referrer" />
+                    )}
+                    {video.niche}
+                  </span>
+                )}
                 {video.game && <span className={`${styles.tag} ${styles.tagGame}`}>{video.game}</span>}
               </div>
 

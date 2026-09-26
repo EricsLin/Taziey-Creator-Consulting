@@ -32,26 +32,6 @@
   align-items: center;
 }
 
-/* ---- slogan -------------------------------------------------------------- */
-
-.slogan {
-  min-width: 0;
-}
-
-.title {
-  font-weight: 800;
-  font-size: clamp(34px, 3.4vw, 48px);
-  line-height: 1;
-  letter-spacing: -0.04em;
-  margin: 0;
-  text-wrap: balance;
-}
-
-.accent {
-  color: var(--accent-deep);
-  -webkit-text-stroke: var(--accent-edge);
-}
-
 /* ---- frame --------------------------------------------------------------- */
 
 .deck {
@@ -202,13 +182,18 @@
    outline. Clipping is also why this can use `taziey.png`: the full cutout's
    shoulders run off both sides of the source frame, and the circle crops those
    straight cuts away long before they show. */
+/* Holds the clipped disc and the hand; the hand overhangs the disc's rim, so it
+   can't live inside the clipping element. */
+.portraitWrap {
+  position: relative;
+  width: clamp(200px, 26vw, 320px);
+  margin: 0 auto;
+}
+
 .portrait {
   position: relative;
-  width: clamp(112px, 10.5vw, 154px);
+  width: 100%;
   aspect-ratio: 1;
-  /* Centred over the slogan: he introduces it, so he sits above its middle
-     rather than hanging off the start of the first line. */
-  margin: 0 auto 22px;
   border-radius: 50%;
   overflow: hidden;
   /* Behind the cutout's transparency, so the disc reads as a solid ground
@@ -234,6 +219,44 @@
   transform: scaleX(-1);
 }
 
+/* Sits on the disc's lower-right rim. It pivots from the wrist (bottom-left)
+   like a real wave, growing a little as it goes. */
+.wave {
+  position: absolute;
+  right: -2%;
+  bottom: 6%;
+  font-size: clamp(54px, 7vw, 84px);
+  line-height: 1;
+  transform-origin: 70% 90%;
+  cursor: default;
+  user-select: none;
+  filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.35));
+}
+
+/* Hovering anywhere on the portrait waves the hand, not just the hand itself. */
+.portraitWrap:hover .wave,
+.wave[data-waving] {
+  animation: wave 1.6s var(--ease-inout);
+}
+
+@keyframes wave {
+  0% { transform: scale(1) rotate(0deg); }
+  12% { transform: scale(1.3) rotate(-14deg); }
+  26% { transform: scale(1.3) rotate(14deg); }
+  40% { transform: scale(1.3) rotate(-12deg); }
+  54% { transform: scale(1.3) rotate(12deg); }
+  68% { transform: scale(1.3) rotate(-6deg); }
+  84% { transform: scale(1.3) rotate(0deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portraitWrap:hover .wave,
+  .wave[data-waving] {
+    animation: none;
+  }
+}
+
 /* ---- responsive ---------------------------------------------------------- */
 
 @media (max-width: 1000px) {
@@ -241,9 +264,6 @@
     grid-template-columns: minmax(0, 1fr);
     gap: 28px;
     align-items: start;
-  }
-  .title {
-    max-width: 22ch;
   }
 }
 

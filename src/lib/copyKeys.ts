@@ -101,24 +101,6 @@ const KEYS: CopyKeyDef[] = [
 
   /* ---- Home — hero ---- */
   {
-    key: 'home.hero.title_before',
-    section: 'Home — hero',
-    label: 'Headline, before accent',
-    default: 'Creators helping ',
-  },
-  {
-    key: 'home.hero.title_accent',
-    section: 'Home — hero',
-    label: 'Headline, accent word',
-    default: 'creators',
-  },
-  {
-    key: 'home.hero.title_after',
-    section: 'Home — hero',
-    label: 'Headline, after accent',
-    default: ' grow.',
-  },
-  {
     key: 'home.recent.eyebrow',
     section: 'Home — hero',
     label: 'Carousel screen-reader label',
@@ -371,6 +353,18 @@ const KEYS: CopyKeyDef[] = [
     default:
       'Working with a manager or editor already? Loop them in on the first message — we’d rather build around your existing team than replace it.',
   },
+  {
+    key: 'contact.email.copy',
+    section: 'Contact page',
+    label: 'Email card — copy hint',
+    default: 'Copy',
+  },
+  {
+    key: 'contact.email.copied',
+    section: 'Contact page',
+    label: 'Email card — copied confirmation',
+    default: 'Copied!',
+  },
 
   /* ---- Contact form ---- */
   {
@@ -470,6 +464,24 @@ const KEYS: CopyKeyDef[] = [
     section: 'Contact form',
     label: 'Note beside the button',
     default: 'We reply to everything, usually same day.',
+  },
+  {
+    key: 'contact.form.sending_label',
+    section: 'Contact form',
+    label: 'Submit button — while sending',
+    default: 'Sending…',
+  },
+  {
+    key: 'contact.form.success',
+    section: 'Contact form',
+    label: 'Message after a successful send',
+    default: 'Got it — we’ll be in touch soon.',
+  },
+  {
+    key: 'contact.form.error',
+    section: 'Contact form',
+    label: 'Message when sending fails',
+    default: 'That didn’t go through. Try again, or email us directly.',
   },
 
   /* ---- Video popup ---- */

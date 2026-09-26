@@ -62,7 +62,7 @@ Project ref `lmrtgteqcqwmlcnhrytd`.
 | `services`           | the numbered cards; `sort_order` is the number shown               |
 | `creators`           | the "You may know…" rail (six per page)                            |
 | `stats`              | the three home-page metric cards                                   |
-| `niches`             | /content filter chips and the contact form dropdown                |
+| `niches`             | /content filter chips (with optional `icon_url`) and the contact form dropdown |
 | `videos`             | the portfolio; `rotator_column` / `rotator_position` also place a video in the home rotator |
 | `packaging_flips`    | before/after pairs for the home strip                              |
 | `contact_channels`   | email / discord / twitter, in the footer, home CTA and /contact    |

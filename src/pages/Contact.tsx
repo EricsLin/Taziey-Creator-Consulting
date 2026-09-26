@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react'
 import { ChannelIcon } from '@/components/ChannelIcon'
 import { ContactForm } from '@/components/ContactForm'
 import { channelOfKind } from '@/lib/content'
@@ -6,43 +7,75 @@ import { useDocumentTitle } from '@/lib/useDocumentTitle'
 import type { ContactChannel } from '@/types'
 import styles from './Contact.module.css'
 
-/** A channel card — an anchor when the row has a link, a plain div when not. */
-function Card({
-  channel,
-  className,
-  handleClass,
-  children,
-}: {
-  channel: ContactChannel
-  className: string
-  handleClass: string
-  children?: React.ReactNode
-}) {
-  const body = (
-    <>
-      <div className={styles.cardBody}>
-        <span className={styles.icon}>
-          <ChannelIcon kind={channel.kind} size={20} />
-        </span>
-        <div>
-          <div className={styles.kicker}>{channel.blurb}</div>
-          <div className={handleClass}>{channel.handle}</div>
-        </div>
+/** Icon, kicker and handle — the inside of every channel card. */
+function CardBody({ channel, handleClass }: { channel: ContactChannel; handleClass: string }) {
+  return (
+    <div className={styles.cardBody}>
+      <span className={styles.icon}>
+        <ChannelIcon kind={channel.kind} size={20} />
+      </span>
+      <div>
+        <div className={styles.kicker}>{channel.blurb}</div>
+        <div className={handleClass}>{channel.handle}</div>
       </div>
-      {children}
-    </>
+    </div>
   )
+}
+
+/** A channel card — an anchor when the row has a link, a plain div when not. */
+function Card({ channel }: { channel: ContactChannel }) {
+  const body = <CardBody channel={channel} handleClass={styles.handle} />
   return channel.href ? (
     <a
       href={channel.href}
-      className={className}
+      className={styles.card}
       target={channel.href.startsWith('http') ? '_blank' : undefined}
       rel="noreferrer"
     >
       {body}
     </a>
   ) : (
-    <div className={className}>{body}</div>
+    <div className={styles.card}>{body}</div>
+  )
+}
+
+/** How long the "Copied!" confirmation stays up. */
+const COPIED_MS = 1800
+
+/**
+ * The email card copies the address rather than opening a mail client — a
+ * mailto link does nothing for anyone on webmail, which is most people.
+ */
+function EmailCard({ channel }: { channel: ContactChannel }) {
+  const copy = useCopy()
+  const [copied, setCopied] = useState(false)
+  const timer = useRef<number | undefined>(undefined)
+
+  useEffect(() => () => window.clearTimeout(timer.current), [])
+
+  const onCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(channel.handle)
+    } catch {
+      return
+    }
+    setCopied(true)
+    window.clearTimeout(timer.current)
+    timer.current = window.setTimeout(() => setCopied(false), COPIED_MS)
+  }
+
+  return (
+    <button
+      type="button"
+      className={`${styles.card} ${styles.primary}`}
+      onClick={onCopy}
+      title={copy('contact.email.copy')}
+    >
+      <CardBody channel={channel} handleClass={styles.handleLg} />
+      <span className={styles.copied} aria-live="polite">
+        {copied && copy('contact.email.copied')}
+      </span>
+    </button>
   )
 }
 
@@ -65,7 +98,7 @@ export function Contact() {
       </section>
 
       <div className={styles.body}>
-        <ContactForm niches={content?.niches ?? []} />
+        <ContactForm niches={content?.niches.map((n) => n.name) ?? []} />
 
         <aside className={styles.aside}>
           <div className={styles.asideHead}>
@@ -73,26 +106,11 @@ export function Contact() {
             <p className={styles.asideNote}>{copy('contact.aside.note')}</p>
           </div>
 
-          {email && (
-            <Card
-              channel={email}
-              className={`${styles.card} ${styles.primary}`}
-              handleClass={styles.handleLg}
-            >
-              <div className={styles.chev} aria-hidden="true">
-                &rarr;
-              </div>
-            </Card>
-          )}
+          {email && <EmailCard channel={email} />}
 
           <div className={styles.pair}>
             {secondary.map((channel) => (
-              <Card
-                key={channel.id}
-                channel={channel}
-                className={styles.card}
-                handleClass={styles.handle}
-              />
+              <Card key={channel.id} channel={channel} />
             ))}
           </div>
 

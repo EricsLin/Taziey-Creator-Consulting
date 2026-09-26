@@ -10,6 +10,8 @@ import styles from './Hero.module.css'
 const DWELL_MS = 4600
 /** Pointer travel that counts as a swipe rather than a click. */
 const SWIPE_PX = 44
+/** How often the hand by Taziey's portrait waves unprompted. */
+const WAVE_EVERY_MS = 15000
 
 interface Props {
   /** Ordered slides — the work carries the hero, so it gets the whole frame. */
@@ -37,6 +39,12 @@ export function Hero({ videos }: Props) {
   const go = useCallback((delta: number) => setIndex((i) => (i + delta + count) % count), [count])
 
   useInterval(() => go(1), count > 1 ? DWELL_MS : null)
+
+  /* The hand waves when the portrait is hovered (pure CSS) and also on its own every so often.
+     Each tick remounts the hand (new key) so the wave restarts even if a hover
+     animation is mid-flight; the flag clears when it ends so hover works again. */
+  const [wave, setWave] = useState({ tick: 0, waving: false })
+  useInterval(() => setWave((w) => ({ tick: w.tick + 1, waving: true })), WAVE_EVERY_MS)
 
   /* Horizontal drag advances the carousel; the trailing click is swallowed so
      a swipe doesn't also open the popup for the video the finger started on. */
@@ -67,17 +75,19 @@ export function Hero({ videos }: Props) {
 
       <div className={styles.shell}>
         <div className={styles.grid}>
-          <div className={styles.slogan}>
-            {/* Taziey introduces the slogan rather than standing in the carousel
-                corner: at the top of the column he reads as the person saying it. */}
-            <div className={styles.portrait} aria-hidden="true">
+          {/* Taziey has the left column to himself, waving at the visitor. */}
+          <div className={styles.portraitWrap} aria-hidden="true">
+            <div className={styles.portrait}>
               <img className={styles.portraitImg} src="/taziey.png" alt="" />
             </div>
-            <h1 className={styles.title}>
-              {copy('home.hero.title_before')}
-              <span className={styles.accent}>{copy('home.hero.title_accent')}</span>
-              {copy('home.hero.title_after')}
-            </h1>
+            <span
+              className={styles.wave}
+              key={wave.tick}
+              data-waving={wave.waving || undefined}
+              onAnimationEnd={() => setWave((w) => ({ ...w, waving: false }))}
+            >
+              👋
+            </span>
           </div>
 
           {/* Everything the carousel needs lives inside the frame: the caption

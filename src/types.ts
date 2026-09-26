@@ -93,6 +93,8 @@ export interface ContactChannel {
 export interface Niche {
   id: string
   name: string
+  /** Small square icon beside the name in the filter chips and video popup. */
+  iconUrl?: string | null
   order: number
 }
 
@@ -111,7 +113,7 @@ export interface SiteContent {
   services: Service[]
   creators: Creator[]
   stats: Stat[]
-  niches: string[]
+  niches: Niche[]
   videos: Video[]
   flips: PackagingFlip[]
   contact: ContactChannel[]

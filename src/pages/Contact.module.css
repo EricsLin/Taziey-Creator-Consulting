@@ -79,7 +79,12 @@
   transform: translateY(-2px);
 }
 
+/* The email card is a copy button, so it sheds the browser's button chrome. */
 .primary {
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -128,10 +133,11 @@
   letter-spacing: -0.03em;
 }
 
-.chev {
-  font-size: 24px;
+/* Confirmation that appears after the card is clicked; empty otherwise. */
+.copied {
+  font-size: 13.5px;
+  font-weight: 600;
   color: var(--accent-deep);
-  -webkit-text-stroke: var(--accent-edge);
   flex-shrink: 0;
 }
 

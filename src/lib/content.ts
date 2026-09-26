@@ -2,6 +2,7 @@ import { supabase } from './supabase'
 import type {
   ContactChannel,
   Creator,
+  Niche,
   PackagingFlip,
   Service,
   ServiceCategory,
@@ -41,7 +42,7 @@ export async function fetchSiteContent(): Promise<SiteContent> {
     services: (services.data ?? []).map(toService),
     creators: (creators.data ?? []).map(toCreator),
     stats: (stats.data ?? []).map(toStat),
-    niches: (niches.data ?? []).map((row: Row) => String(row.name)),
+    niches: (niches.data ?? []).map(toNiche),
     videos: (videos.data ?? []).map(toVideo),
     flips: (flips.data ?? []).map(toFlip),
     contact: (contact.data ?? []).map(toChannel),
@@ -81,6 +82,13 @@ const toStat = (r: Row): Stat => ({
   value: r.value ?? '',
   label: r.label ?? '',
   note: r.note ?? '',
+  order: r.sort_order,
+})
+
+const toNiche = (r: Row): Niche => ({
+  id: r.id,
+  name: String(r.name),
+  iconUrl: r.icon_url,
   order: r.sort_order,
 })
 

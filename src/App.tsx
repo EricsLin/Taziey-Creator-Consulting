@@ -16,6 +16,7 @@ import {
   ContactEditor,
   CreatorsEditor,
   Dashboard,
+  NichesEditor,
   PackagingEditor,
   ServicesEditor,
   StatsEditor,
@@ -42,6 +43,7 @@ export default function App() {
                 <Route path="admin" element={<AdminLayout />}>
                   <Route index element={<Dashboard />} />
                   <Route path="videos" element={<VideosEditor />} />
+                  <Route path="niches" element={<NichesEditor />} />
                   <Route path="packaging" element={<PackagingEditor />} />
                   <Route path="creators" element={<CreatorsEditor />} />
                   <Route path="services" element={<ServicesEditor />} />

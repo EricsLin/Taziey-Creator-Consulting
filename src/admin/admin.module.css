@@ -439,7 +439,6 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-deep);
-  -webkit-text-stroke: var(--accent-edge);
   font-weight: 600;
   margin-bottom: 10px;
 }

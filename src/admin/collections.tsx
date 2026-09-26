@@ -171,6 +171,24 @@ export function ContactEditor() {
   )
 }
 
+export function NichesEditor() {
+  return (
+    <CollectionEditor
+      table="niches"
+      title="Niches"
+      blurb="The filter chips on /content and the niche dropdown on the contact form, in this order. The icon sits beside the name in the chips and in the video popup — paste a link to a small square PNG (about 64×64); leave it empty for no icon."
+      fields={[
+        { name: 'name', label: 'Name' },
+        { name: 'icon_url', label: 'Icon URL', type: 'image', nullable: true, full: true },
+      ]}
+      titleOf={(r) => r.name}
+      thumbOf={(r) => r.icon_url}
+      newRow={() => ({ name: 'New niche', icon_url: null })}
+      addLabel="Add niche"
+    />
+  )
+}
+
 export function VideosEditor() {
   const niches = useNames('niches')
   return (

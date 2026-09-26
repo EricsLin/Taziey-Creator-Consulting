@@ -13,6 +13,7 @@ const SECTIONS: Array<{ label: string; links: Array<{ to: string; label: string 
     label: 'Content',
     links: [
       { to: '/admin/videos', label: 'Videos' },
+      { to: '/admin/niches', label: 'Niches' },
       { to: '/admin/packaging', label: 'Packaging flips' },
       { to: '/admin/creators', label: 'Creators' },
     ],

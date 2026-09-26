@@ -23,22 +23,55 @@ interface Props {
   niches?: string[]
 }
 
+type Status = 'idle' | 'sending' | 'sent' | 'error'
+
+const ENDPOINT = 'https://api.web3forms.com/submit'
+
 /**
- * Enquiry form — presentation only for now. Fields are controlled so the values
- * are ready to hand off, but nothing is submitted anywhere yet: submitting is a
- * no-op pending the Supabase edge function.
+ * Enquiry form. Submissions go to Web3Forms, which emails them to the inbox the
+ * access key is registered to; the sender's address becomes the reply-to.
  */
 export function ContactForm({ niches = [] }: Props) {
   const copy = useCopy()
   const [values, setValues] = useState<ContactEnquiry>(EMPTY)
+  const [status, setStatus] = useState<Status>('idle')
+  // Honeypot: hidden from people, so anything in it came from a bot.
+  const [botcheck, setBotcheck] = useState(false)
 
   const set = (key: keyof ContactEnquiry) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => setValues((v) => ({ ...v, [key]: e.target.value }))
+  ) => {
+    setValues((v) => ({ ...v, [key]: e.target.value }))
+    if (status === 'sent' || status === 'error') setStatus('idle')
+  }
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    // TODO: POST `values` to the Supabase edge function once the backend exists.
+    if (status === 'sending') return
+    setStatus('sending')
+    try {
+      const res = await fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: import.meta.env.VITE_WEB3FORMS_KEY,
+          subject: `New enquiry from ${values.name}`,
+          from_name: 'Taziey website',
+          name: values.name,
+          email: values.email,
+          'Channel link': values.channelUrl,
+          Niche: values.niche || '—',
+          message: values.message,
+          botcheck,
+        }),
+      })
+      const data: { success?: boolean } = await res.json().catch(() => ({}))
+      if (!res.ok || !data.success) throw new Error('Submission rejected')
+      setValues(EMPTY)
+      setStatus('sent')
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -89,7 +122,7 @@ export function ContactForm({ niches = [] }: Props) {
           <input
             id="cf-channel"
             className={styles.input}
-            type="url"
+            type="text"
             name="channelUrl"
             inputMode="url"
             placeholder={copy('contact.form.channel_placeholder')}
@@ -136,12 +169,30 @@ export function ContactForm({ niches = [] }: Props) {
           />
         </div>
 
+        <input
+          type="checkbox"
+          name="botcheck"
+          className={styles.honeypot}
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          checked={botcheck}
+          onChange={(e) => setBotcheck(e.target.checked)}
+        />
+
         <div className={styles.submitRow}>
-          <button type="submit" className={styles.submit}>
-            {copy('contact.form.submit_label')}
+          <button type="submit" className={styles.submit} disabled={status === 'sending'}>
+            {status === 'sending'
+              ? copy('contact.form.sending_label')
+              : copy('contact.form.submit_label')}
           </button>
           <span className={styles.reply}>{copy('contact.form.reply_note')}</span>
         </div>
+
+        <p className={styles.status} data-status={status} role="status" aria-live="polite">
+          {status === 'sent' && copy('contact.form.success')}
+          {status === 'error' && copy('contact.form.error')}
+        </p>
       </form>
     </div>
   )
