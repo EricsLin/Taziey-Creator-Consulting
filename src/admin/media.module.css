@@ -1,0 +1,343 @@
+/* Media library: the image field's URL row, the upload / choose dialog and the
+   /admin/assets grid. Same tokens and density as admin.module.css. */
+
+/* ---- image field ---- */
+
+.urlRow {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.urlRow > button {
+  flex: none;
+  white-space: nowrap;
+}
+
+.previewRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+/* ---- dropzone ---- */
+
+.dropzone {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 180px;
+  padding: 24px 16px;
+  border: 1.5px dashed var(--line-4);
+  border-radius: var(--r-md);
+  background: var(--bg);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.dropzone:hover,
+.dropzone:focus-within {
+  border-color: var(--accent-deep);
+}
+
+.dropzoneOver {
+  border-color: var(--accent-deep);
+  background: var(--accent-soft);
+}
+
+.dropzoneDisabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+/* Visually hidden but still focusable, so the label stays keyboard-reachable. */
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dropIcon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.dropTitle {
+  font-weight: 600;
+  font-size: 14.5px;
+  color: var(--ink);
+}
+
+.dropNote {
+  font-size: 12px;
+  color: var(--ink-6);
+}
+
+/* ---- upload progress ---- */
+
+.uploads {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upload {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.uploadRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.uploadName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.uploadPct {
+  flex: none;
+  color: var(--ink-5);
+  font-variant-numeric: tabular-nums;
+}
+
+.uploadError {
+  font-size: 12.5px;
+  color: var(--danger-ink);
+}
+
+.bar {
+  height: 4px;
+  border-radius: 999px;
+  background: var(--bg-sunk);
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  background: var(--accent-deep);
+  transition: width 0.15s linear;
+}
+
+/* ---- asset grid ---- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.gridScroll {
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  max-height: 420px;
+  overflow-y: auto;
+  padding: 2px;
+  align-content: start;
+}
+
+.gridEmpty {
+  padding: 40px 16px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-5);
+  border: 1px dashed var(--line-4);
+  border-radius: var(--r-md);
+}
+
+.tile {
+  background: var(--surface);
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-sm);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tileSelected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.tileBtn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  min-width: 0;
+}
+
+.tile:has(.tileBtn:hover) {
+  border-color: var(--ink);
+}
+
+.tileImg {
+  aspect-ratio: 16 / 10;
+  border-radius: 6px;
+  overflow: hidden;
+  /* Checkerboard so transparent PNGs read as transparent. */
+  background: repeating-conic-gradient(var(--slot) 0% 25%, var(--bg) 0% 50%) 50% / 16px 16px;
+}
+
+.tileImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tileName {
+  font-size: 12.5px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tileMeta,
+.tileUsage {
+  font-size: 11.5px;
+  color: var(--ink-6);
+}
+
+.tileActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding-top: 4px;
+  border-top: 1px solid var(--line);
+  margin-top: 2px;
+}
+
+.danger {
+  color: var(--danger);
+}
+
+/* ---- picker dialog ---- */
+
+.dialog {
+  width: min(920px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 0;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: 0 24px 60px var(--shadow);
+}
+
+.dialog::backdrop {
+  background: var(--overlay-strong);
+  backdrop-filter: blur(2px);
+}
+
+.picker {
+  display: flex;
+  flex-direction: column;
+}
+
+.pickerHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.pickerTitle {
+  font-size: 19px;
+  letter-spacing: -0.01em;
+}
+
+.pickerBody {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+}
+
+.pickerUpload,
+.pickerAssets {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.pickerUpload {
+  border-right: 1px solid var(--line);
+}
+
+.pickerLabel {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink-4);
+}
+
+.pickerAssetsHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+/* ---- library page ---- */
+
+.libraryUpload {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.libraryBar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.librarySearch {
+  max-width: 320px;
+}
+
+@media (max-width: 720px) {
+  .pickerBody {
+    grid-template-columns: 1fr;
+  }
+  .pickerUpload {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .dropzone {
+    min-height: 130px;
+  }
+  .urlRow {
+    flex-direction: column;
+  }
+}

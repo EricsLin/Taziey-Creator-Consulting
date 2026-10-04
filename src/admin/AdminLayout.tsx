@@ -19,6 +19,10 @@ const SECTIONS: Array<{ label: string; links: Array<{ to: string; label: string 
     ],
   },
   {
+    label: 'Library',
+    links: [{ to: '/admin/assets', label: 'Assets' }],
+  },
+  {
     label: 'Offer',
     links: [
       { to: '/admin/services', label: 'Services' },

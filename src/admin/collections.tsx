@@ -80,7 +80,7 @@ export function CreatorsEditor() {
       fields={[
         { name: 'name', label: 'Name' },
         { name: 'subscribers', label: 'Subscribers', placeholder: '1.4M', hint: 'Written as it should read — the site does no formatting.' },
-        { name: 'avatar_url', label: 'Avatar URL', type: 'image', shape: 'circle', nullable: true, full: true },
+        { name: 'avatar_url', label: 'Avatar', type: 'image', shape: 'circle', nullable: true, full: true },
       ]}
       titleOf={(r) => r.name}
       subtitleOf={(r) => `${r.subscribers} subs`}
@@ -131,8 +131,8 @@ export function PackagingEditor() {
           full: true,
           hint: 'From the Videos table. Leave empty to keep the card non-clickable.',
         },
-        { name: 'before_url', label: 'Before thumbnail URL', type: 'image', nullable: true },
-        { name: 'after_url', label: 'After thumbnail URL', type: 'image', nullable: true },
+        { name: 'before_url', label: 'Before thumbnail', type: 'image', nullable: true },
+        { name: 'after_url', label: 'After thumbnail', type: 'image', nullable: true },
       ]}
       titleOf={(r) => r.title}
       subtitleOf={(r) => `${r.creator} · ${r.lift}`}
@@ -176,10 +176,10 @@ export function NichesEditor() {
     <CollectionEditor
       table="niches"
       title="Niches"
-      blurb="The filter chips on /content and the niche dropdown on the contact form, in this order. The icon sits beside the name in the chips and in the video popup — paste a link to a small square PNG (about 64×64); leave it empty for no icon."
+      blurb="The filter chips on /content and the niche dropdown on the contact form, in this order. The icon sits beside the name in the chips and in the video popup — a small square image (about 64×64) works best; leave it empty for no icon."
       fields={[
         { name: 'name', label: 'Name' },
-        { name: 'icon_url', label: 'Icon URL', type: 'image', nullable: true, full: true },
+        { name: 'icon_url', label: 'Icon', type: 'image', nullable: true, full: true },
       ]}
       titleOf={(r) => r.name}
       thumbOf={(r) => r.icon_url}
@@ -202,7 +202,7 @@ export function VideosEditor() {
         { name: 'views', label: 'Views', placeholder: '41M' },
         { name: 'niche', label: 'Niche', type: 'select', options: niches },
         { name: 'youtube_url', label: 'YouTube URL', nullable: true },
-        { name: 'thumbnail_url', label: 'Thumbnail URL', type: 'image', nullable: true, full: true },
+        { name: 'thumbnail_url', label: 'Thumbnail', type: 'image', nullable: true, full: true },
         { name: 'game', label: 'Game', placeholder: 'Minecraft' },
         { name: 'likes', label: 'Likes', placeholder: '182K' },
         { name: 'duration', label: 'Runtime', placeholder: '14:22' },

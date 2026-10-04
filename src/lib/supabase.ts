@@ -15,3 +15,6 @@ if (!url || !anonKey) {
  * signed-in session is what unlocks writes.
  */
 export const supabase = createClient(url, anonKey)
+
+/** For the raw Storage upload in the admin, which needs progress events the client doesn't expose. */
+export { url as supabaseUrl, anonKey as supabaseAnonKey }

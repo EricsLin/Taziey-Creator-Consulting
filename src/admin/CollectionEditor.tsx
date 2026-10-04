@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { deleteRow, insertRow, listRows, persistOrder, updateRow, type Row, type TableName } from './api'
+import { ImageField } from './MediaLibrary'
 import styles from './admin.module.css'
 
 export interface FieldDef {
@@ -418,6 +419,15 @@ function Field({
             )
           })}
         </select>
+      ) : field.type === 'image' ? (
+        <ImageField
+          id={id}
+          value={text}
+          onChange={onChange}
+          nullable={field.nullable}
+          placeholder={field.placeholder}
+          shape={field.shape}
+        />
       ) : (
         <input
           id={id}
@@ -437,12 +447,6 @@ function Field({
       )}
 
       {field.hint && <div className={styles.hint}>{field.hint}</div>}
-
-      {field.type === 'image' && text && (
-        <div className={`${styles.preview} ${field.shape === 'circle' ? styles.previewCircle : ''}`}>
-          <img src={text} alt="" referrerPolicy="no-referrer" />
-        </div>
-      )}
     </div>
   )
 }

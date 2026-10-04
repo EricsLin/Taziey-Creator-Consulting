@@ -10,6 +10,7 @@ import { Content } from '@/pages/Content'
 import { Contact } from '@/pages/Contact'
 import { NotFound } from '@/pages/NotFound'
 import { AdminLayout } from '@/admin/AdminLayout'
+import { AssetsPage } from '@/admin/AssetsPage'
 import { CopyEditor } from '@/admin/CopyEditor'
 import {
   CategoriesEditor,
@@ -51,6 +52,7 @@ export default function App() {
                   <Route path="stats" element={<StatsEditor />} />
                   <Route path="contact" element={<ContactEditor />} />
                   <Route path="copy" element={<CopyEditor />} />
+                  <Route path="assets" element={<AssetsPage />} />
                 </Route>
               </Routes>
             </VideoModalProvider>

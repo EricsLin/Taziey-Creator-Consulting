@@ -35,6 +35,9 @@ src/
     collections.tsx       per-table configuration of that editor + dashboard
     CopyEditor.tsx        every headline / lede / label, grouped by section
     VideoImportBar.tsx    add a video by pasting its YouTube URL
+    MediaLibrary.tsx      ImageField, the upload / choose picker, dropzone, asset grid
+    AssetsPage.tsx        /admin/assets — the full media library
+    media.ts              Storage helpers: validate, upload with progress, list, delete, usage
     api.ts                CRUD helpers + the video-meta edge function call
   lib/
     supabase.ts           the publishable-key client
@@ -76,6 +79,22 @@ schema PostgREST doesn't expose, so it can't be called as an RPC.
 
 `homeRotator` used to be a hardcoded list of ids; it is now derived from each
 video's `rotator_column` (1–3) and `rotator_position`, both editable in /admin.
+
+### Storage: `media` bucket
+
+Every image field in /admin (thumbnails, avatars, niche icons, packaging
+flips) takes a URL three ways: paste one, upload from the computer, or pick an
+existing asset. Uploads go to a public `media` bucket and the field stores the
+file's public URL — the tables still only ever hold a URL.
+
+- Images only (PNG, JPEG, WebP, GIF, AVIF), 50 MB each — enforced by the bucket,
+  mirrored in `src/admin/media.ts`. SVG is excluded because it can carry script.
+- Anyone can load a file by its URL; listing, uploading and deleting are gated
+  by `private.is_admin()`, like the tables.
+- Files are named `<stamp>-<original-name>.<ext>` and never overwritten.
+
+Created by `supabase/media-bucket.sql` — run it once in the SQL editor. The
+project-wide upload cap (Storage → Settings) must be at least 50 MB.
 
 ### Edge function: `video-meta`
 
@@ -120,14 +139,12 @@ Two things to know before this goes anywhere public: the site presents these as
 Taziey's own work, and the URLs are third-party — they can change or start
 refusing hotlinks at any time. `ImageSlot` degrades to its labelled placeholder
 on load failure, so nothing breaks visually, but these should be replaced with
-real client assets before launch. Both fields are plain URLs in /admin, so
-swapping in Supabase Storage links is a paste, not a code change.
+real client assets before launch — upload them through any image field's
+Upload / choose button, or in bulk at /admin/assets.
 
 ## Not built yet
 
 - Contact form submission — `src/components/ContactForm.tsx` renders and holds
   its values, but `handleSubmit` is a no-op pending an edge function to POST to
   (plus success/error states and spam protection)
-- Image uploads — the admin takes URLs; a Storage bucket + upload widget would
-  remove the dependency on hotlinking
 - Real client imagery (see above)
